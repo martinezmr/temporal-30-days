@@ -2027,6 +2027,7 @@ dependencies = [
     { name = "pyeapi" },
     { name = "pynautobot" },
     { name = "temporalio", extra = ["openai-agents", "opentelemetry"] },
+    { name = "temporalio-openai-agents", extra = ["mcp"] },
 ]
 
 [package.dev-dependencies]
@@ -2047,6 +2048,7 @@ requires-dist = [
     { name = "pyeapi", specifier = ">=1.0.4" },
     { name = "pynautobot", specifier = ">=3.2" },
     { name = "temporalio", extras = ["opentelemetry", "openai-agents"], specifier = ">=1.34" },
+    { name = "temporalio-openai-agents", extras = ["mcp"], specifier = ">=1.1" },
 ]
 
 [package.metadata.requires-dev]
@@ -2090,6 +2092,21 @@ pydantic = [
 ]
 
 [[package]]
+name = "temporalio-mcp"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mcp" },
+    { name = "mcp-types" },
+    { name = "pydantic" },
+    { name = "temporalio" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d0/bf/b7f69dccca2485fd6496137211d7a24773937678cf148d895ffd57ceddbf/temporalio_mcp-0.2.0.tar.gz", hash = "sha256:0217f581cd8937231290a9f0fcc0e415dbb0ba71e5b8bfd0e4fdcf4b7eb28450", size = 16157, upload-time = "2026-09-16T19:05:58.145Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/ae/2d549e97113b8c3fe361029cd9f9acee0abb5fd3151f3f4c73f80c3ae3d0/temporalio_mcp-0.2.0-py3-none-any.whl", hash = "sha256:b2986c373d94d4063eb9aea516660d93f09011acae1205b2c3971e6962614847", size = 19639, upload-time = "2026-09-16T19:05:56.857Z" },
+]
+
+[[package]]
 name = "temporalio-openai-agents"
 version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2104,6 +2121,13 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/1b/10/56612e595263546b578d0510e03755c7b7267de88d9ac726ebf50daca1ee/temporalio_openai_agents-1.1.0.tar.gz", hash = "sha256:5a279838db6288e873e8268a74b905c533ec196b2fbb796f14a4f45d06ee0260", size = 73387, upload-time = "2026-10-01T19:43:24.843Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/42/73/c118e692c0d5e6c624632d3b07d3c49f071c12f9ce92f825c6cccd061248/temporalio_openai_agents-1.1.0-py3-none-any.whl", hash = "sha256:d8054af26a7b4f8414b60bc04550d48dff0cb607cf70550c43e0a5b99d13041e", size = 72409, upload-time = "2026-10-01T19:43:23.328Z" },
+]
+
+[package.optional-dependencies]
+mcp = [
+    { name = "mcp" },
+    { name = "mcp-types" },
+    { name = "temporalio-mcp" },
 ]
 
 [[package]]
