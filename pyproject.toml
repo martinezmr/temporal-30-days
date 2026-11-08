@@ -13,6 +13,7 @@ dependencies = [
     "pynautobot>=3.2",
     "opentelemetry-sdk>=1.45.2",
     "aiohttp>=3.14.5",
+    "openai>=1.60",
 ]
 
 [dependency-groups]
