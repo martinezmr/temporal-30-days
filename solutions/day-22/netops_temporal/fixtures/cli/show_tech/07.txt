@@ -1,0 +1,50 @@
+Nov  8 00:09:31 bos-rtr-01 Launcher: %LAUNCHER-6-PROCESS_START: Configuring process 'Dot1x' to start in role 'ActiveSupervisor'
+Nov  8 00:09:31 bos-rtr-01 Launcher: %LAUNCHER-6-PROCESS_START: Configuring process 'RouteCache' to start in role 'ActiveSupervisor'
+Nov  8 00:09:31 bos-rtr-01 ProcMgr: %PROCMGR-6-COMMAND_RECEIVED: ProcMgr has received 'warm start' command
+Nov  8 00:09:31 bos-rtr-01 ProcMgr: %PROCMGR-6-WORKER_WARMSTART: ProcMgr worker warm start. (PID=567)
+Nov  8 00:09:31 bos-rtr-01 Stp: %SPANTREE-6-ROOTCHANGE: Root changed for instance MST0: new root interface is (none), new root bridge mac address is 00:1c:73:1d:c4:be (this switch)
+Nov  8 00:09:31 bos-rtr-01 Lldp: %LLDP-5-NEIGHBOR_NEW: LLDP neighbor with chassisId 001c.7330.e9ed and portId "Management0" added on interface Management0
+Nov  8 00:09:32 bos-rtr-01 SuperServer: %AGENT-6-INITIALIZED: Agent 'SuperServer' initialized; pid=825
+Nov  8 00:09:32 bos-rtr-01 ProcMgr: %PROCMGR-7-NEW_PROCESSES: New processes configured to run under ProcMgr control: ['Dot1x', 'RouteCache']
+Nov  8 00:09:32 bos-rtr-01 ProcMgr: %PROCMGR-7-PROCESSES_ADOPTED: ProcMgr (PID=567) adopted running processes:  (Sysdb, PID=618) (Launcher, PID=619) (Fru, PID=620) (StageMgr, PID=621) (ConfigAgent, PID=622) (AgentMonitor, PID=819) (LacpTxAgent, PID=820) (IgmpSnooping, PID=821) (Acl, PID=822) (SharedSecretProfile, PID=823) (KernelNetworkInfo, PID=824) (SuperServer, PID=825) (EventMgr, PID=826) (FibServices, PID=827) (TopoAgent, PID=828) (Qos, PID=829) (Ira, PID=830) (Bfd, PID=832) (AirStream, PID=833) (L2Rib, PID=834) (AleVirtualL3Unicast, PID=835) (CapiApp, PID=836) (Ebra, PID=837) (OpenConfig, PID=838) (SystemInitMonitor, PID=839) (IfIndex, PID=840) (PortSec, PID=841) (LedPolicy, PID=842) (Thermostat, PID=843) (Arp, PID=844) (ArfaAegis, PID=845) (rbfdu, PID=847) (PowerFuse, PID=848) (Aaa, PID=849) (ReloadCauseAgent, PID=850) (McastCommon, PID=851) (StpTxRx, PID=852) (RecoveryPolicy, PID=853) (KernelFib, PID=854) (Lag, PID=855) (StandbyCpld, PID=856) (StpTopology, PID=857) (Stp, PID=858) (McastCommon6, PID=859) (AleOpenConfig, PID=860) (Tunnel, PID=861) (Lldp, PID=862) (L1OpenConfig, PID=863) (Etba, PID=864) (PhyEthtool, PID=865) (IpRib, PID=1099) (ConnectedRoute, PID=1100) (StaticRoute, PID=1101) (RouteInput, PID=1103) (Ospf, PID=1104)
+Nov  8 00:09:32 bos-rtr-01 ProcMgr: %PROCMGR-6-PROCESS_STARTED: 'Dot1x' starting with PID=1112 (PPID=567) -- execing '/usr/bin/Dot1x'
+Nov  8 00:09:32 bos-rtr-01 ProcMgr: %PROCMGR-7-WORKER_WARMSTART_DONE: ProcMgr worker warm start done. (PID=567)
+Nov  8 00:09:32 bos-rtr-01 ProcMgr: %PROCMGR-6-PROCESS_STARTED: 'RouteCache' starting with PID=1113 (PPID=567) -- execing '/usr/bin/RouteCache'
+Nov  8 00:09:32 bos-rtr-01 Arp: %INTF-4-DUPLICATE_ADDRESS_WITH_HOST: IP address 172.17.0.2 configured on interface Management0 is in use by a host with MAC address 9a:0e:a3:13:50:77 on interface Management0 in VRF default
+Nov  8 00:09:32 bos-rtr-01 Arp: %ARP-4-DUPLICATE_ADDRESS_WITH_INTF: A host on interface Management0 with MAC address 9a:0e:a3:13:50:77 and IP address 172.17.0.2 is using an IP address configured on an interface in VRF default
+Nov  8 00:09:32 bos-rtr-01 ConfigAgent: %SYS-5-CONFIG_E: Enter configuration mode from console by root on vty16 (UnknownIpAddr)
+Nov  8 00:09:33 bos-rtr-01 StaticRoute: %AGENT-6-INITIALIZED: Agent 'StaticRoute' initialized; pid=1101
+Nov  8 00:09:33 bos-rtr-01 IpRib: %AGENT-6-INITIALIZED: Agent 'IpRib' initialized; pid=1099
+Nov  8 00:09:33 bos-rtr-01 Lldp: %LLDP-5-NEIGHBOR_NEW: LLDP neighbor with chassisId 001c.7366.3d86 and portId "Ethernet2" added on interface Ethernet2
+Nov  8 00:09:33 bos-rtr-01 RouteInput: %AGENT-6-INITIALIZED: Agent 'RouteInput' initialized; pid=1103
+Nov  8 00:09:33 bos-rtr-01 RouteCache: %AGENT-6-INITIALIZED: Agent 'RouteCache' initialized; pid=1113
+Nov  8 00:09:34 bos-rtr-01 ConnectedRoute: %AGENT-6-INITIALIZED: Agent 'ConnectedRoute' initialized; pid=1100
+Nov  8 00:09:34 bos-rtr-01 Dot1x: %AGENT-6-INITIALIZED: Agent 'Dot1x' initialized; pid=1112
+Nov  8 00:09:35 bos-rtr-01 Lldp: %LLDP-5-NEIGHBOR_NEW: LLDP neighbor with chassisId 001c.7330.e9ed and portId "Ethernet1" added on interface Ethernet1
+Nov  8 00:09:35 bos-rtr-01 Ospf: %AGENT-6-INITIALIZED: Agent 'Ospf' initialized; pid=1104
+Nov  8 00:09:35 bos-rtr-01 IpRib: %IPRIB-5-RIBREADY_IGP: IGP protocols in VRF default have converged
+Nov  8 00:09:35 bos-rtr-01 IpRib: %IPRIB-5-RIBREADY_PROTO: All protocols in VRF default have converged
+Nov  8 00:09:35 bos-rtr-01 IpRib: %IPRIB-5-RIBREADY_FIB: All routes in VRF default are available in FIB
+Nov  8 00:09:36 bos-rtr-01 ConfigAgent: %SYS-5-CONFIG_STARTUP: Startup config saved from system:/running-config by root on vty16 (UnknownIpAddr).
+Nov  8 00:09:36 bos-rtr-01 Ospf: Commence routing updates
+Nov  8 00:09:36 bos-rtr-01 ConfigAgent: %SYS-5-CONFIG_I: Configured from console by root on vty16 (UnknownIpAddr)
+Nov  8 00:09:38 bos-rtr-01 OpenConfig: %OPENCONFIG-6-GRPC_SERVER_START Starting gRPC server with transport profile "default"
+Nov  8 00:09:40 bos-rtr-01 SuperServer: %SYS-5-CLI_SCHEDULER_ENABLED: CliScheduler is enabled, continuing its execution of scheduled CLI jobs.
+Nov  8 00:09:41 bos-rtr-01 SuperServer: %SECURITY-6-SSL_PROFILE_VALID: SSL profile 'ARISTA_DEFAULT_PROFILE' is valid
+Nov  8 00:09:42 bos-rtr-01 Ospf: Instance 1: %OSPF-4-OSPF_ADJACENCY_ESTABLISHED: NGB 10.0.0.3, interface 10.10.10.5 adjacency established
+Nov  8 00:09:47 bos-rtr-01 Ospf: Instance 1: %OSPF-4-OSPF_ADJACENCY_ESTABLISHED: NGB 10.0.0.1, interface 10.10.10.2 adjacency established
+Nov  8 00:10:01 bos-rtr-01 Stp: %SPANTREE-6-STABLE_CHANGE: Stp state is now stable
+Nov  8 00:10:34 bos-rtr-01 SystemInitMonitor: %SYS-5-SYSTEM_INITIALIZED: System is initialized
+Nov  8 00:10:34 bos-rtr-01 Launcher: %LAUNCHER-6-PROCESS_STOP: Configuring process 'SystemInitMonitor' to stop in role 'ActiveSupervisor'
+Nov  8 00:10:34 bos-rtr-01 ProcMgr: %PROCMGR-6-COMMAND_RECEIVED: ProcMgr has received 'warm start' command
+Nov  8 00:10:34 bos-rtr-01 ProcMgr: %PROCMGR-6-WORKER_WARMSTART: ProcMgr worker warm start. (PID=567)
+Nov  8 00:10:34 bos-rtr-01 ProcMgr: %PROCMGR-7-PROCESSES_DECONFIGURED: Processes no longer running under ProcMgr control: ['SystemInitMonitor']
+Nov  8 00:10:34 bos-rtr-01 ProcMgr: %PROCMGR-7-PROCESSES_ADOPTED: ProcMgr (PID=567) adopted running processes:  (Sysdb, PID=618) (Launcher, PID=619) (Fru, PID=620) (StageMgr, PID=621) (ConfigAgent, PID=622) (AgentMonitor, PID=819) (LacpTxAgent, PID=820) (IgmpSnooping, PID=821) (Acl, PID=822) (SharedSecretProfile, PID=823) (KernelNetworkInfo, PID=824) (SuperServer, PID=825) (EventMgr, PID=826) (FibServices, PID=827) (TopoAgent, PID=828) (Qos, PID=829) (Ira, PID=830) (Bfd, PID=832) (AirStream, PID=833) (L2Rib, PID=834) (AleVirtualL3Unicast, PID=835) (CapiApp, PID=836) (Ebra, PID=837) (OpenConfig, PID=838) (IfIndex, PID=840) (PortSec, PID=841) (LedPolicy, PID=842) (Thermostat, PID=843) (Arp, PID=844) (ArfaAegis, PID=845) (rbfdu, PID=847) (PowerFuse, PID=848) (Aaa, PID=849) (ReloadCauseAgent, PID=850) (McastCommon, PID=851) (StpTxRx, PID=852) (RecoveryPolicy, PID=853) (KernelFib, PID=854) (Lag, PID=855) (StandbyCpld, PID=856) (StpTopology, PID=857) (Stp, PID=858) (McastCommon6, PID=859) (AleOpenConfig, PID=860) (Tunnel, PID=861) (Lldp, PID=862) (L1OpenConfig, PID=863) (Etba, PID=864) (PhyEthtool, PID=865) (IpRib, PID=1099) (ConnectedRoute, PID=1100) (StaticRoute, PID=1101) (RouteInput, PID=1103) (Ospf, PID=1104) (Dot1x, PID=1112) (RouteCache, PID=1113)
+Nov  8 00:10:34 bos-rtr-01 ProcMgr: %PROCMGR-6-TERMINATE_RUNNING_PROCESS: Terminating deconfigured/reconfigured process 'SystemInitMonitor' (PID=839)
+Nov  8 00:10:34 bos-rtr-01 ProcMgr: %PROCMGR-7-WORKER_WARMSTART_DONE: ProcMgr worker warm start done. (PID=567)
+Nov  8 00:10:34 bos-rtr-01 ProcMgr: %PROCMGR-6-PROCESS_TERMINATED: 'SystemInitMonitor' (PID=839, status=9) has terminated.
+Nov  8 00:11:42 bos-rtr-01 SuperServer: %SYS-5-SYSTEM_RESTARTED: System restarted
+Nov  8 00:11:42 bos-rtr-01 SuperServer: %SYS-6-SYSTEM_INFO: Software image version: 4.32.0F-36401836.4320F (engineering build)
+Nov  8 00:11:42 bos-rtr-01 SuperServer: %SYS-6-SYSTEM_INFO: Model: cEOSLab
+Nov  8 00:11:42 bos-rtr-01 SuperServer: %SYS-6-SYSTEM_INFO: Serial number: 
+Nov  8 00:19:26 bos-rtr-01 ReloadCauseAgent: %SYS-6-SYSTEM_INFO: Reload Cause 1: Unknown
