@@ -4,13 +4,14 @@
 
 The `.devcontainer/` in this repo gives you a Codespace with Python, `uv`, the Temporal CLI, and
 a Temporal dev server that starts automatically (UI forwarded on port 8233, namespaces `default`
-and `compliance` already created). It sets `LAB_MODE=mock`, so every device and Nautobot call
-replays outputs recorded from the course lab.
+and `compliance` and Day 20's search attributes already created). It sets `LAB_MODE=mock`, so every
+device and Nautobot call replays outputs recorded from the course lab, and a scripted model stands
+in on the AI days.
 
 ## Where it helps
 
-- Studying away from your lab. Every day runs in mock mode, and Days 1, 4 and 6 don't need
-  devices at all.
+- Studying away from your lab. Mock mode covers all 30 days. On Day 22, run
+  `./lab/nexus-endpoint.sh` once, as the lesson says.
 - Pure-Temporal topics where devices don't matter: determinism, testing, signals, queries,
   updates, timers, Continue-As-New, child workflows, schedules, versioning, Nexus.
 - Practising failures with the mock switches (`MOCK_UNREACHABLE`, `MOCK_AUTH_FAIL`,
@@ -19,6 +20,8 @@ replays outputs recorded from the course lab.
 
 ## Where it doesn't
 
+- **A real model.** Ollama runs on your laptop, so the AI days use the scripted model here unless
+  you point `LLM_BASE_URL` at a hosted provider and set `LLM_MODE=live`.
 - **Your cEOS lab and Nautobot run locally.** A Codespace can't reach them, which is why it uses
   mock mode.
 - **cEOS images can't be pulled from a public registry** (Arista requires an account), so running

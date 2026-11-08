@@ -11,6 +11,7 @@ The whole course runs on your laptop:
 | 4 × Arista cEOS in containerlab | The **state** side: real devices to talk to | Day 2 (optional until Day 7) | [`lab/ceos-clab.clab.yml`](../lab/ceos-clab.clab.yml) |
 | Nautobot | The **intent** side: what the network *should* look like | Day 7 | [`lab/nautobot/`](../lab/nautobot/) |
 | Python 3.13 + `uv` | Your workers and starters | Day 1 | `uv sync` |
+| A language model | Explains drift and runs the agent | Day 25 (optional) | [Ollama](#6-a-language-model-days-2528-optional), or any OpenAI-compatible server |
 
 No lab yet? Every day works in **mock mode** (`LAB_MODE=mock`), which replays real device
 output from files. See [Mock mode](#mock-mode) at the bottom.
@@ -40,7 +41,14 @@ open http://localhost:8233
 The script runs the Temporal dev server in a container with `--db-filename`, so workflows
 survive a container restart. Without it, every restart would wipe the long-running
 workflows you build in Week 2. It also creates a second namespace, `compliance`, for the
-Nexus days.
+Nexus days, and registers the search attributes Day 20 uses (`Device`, `ComplianceStatus`).
+
+On Day 22, you'll also create the Nexus endpoint. Run this once, and again whenever you wipe
+Temporal's data. It also registers the search attributes in `compliance`:
+
+```bash
+./lab/nexus-endpoint.sh
+```
 
 ## 3. cEOS lab
 
@@ -130,6 +138,20 @@ uv run --env-file .env python -m netops_temporal.tools.check_lab
 It checks Temporal, eAPI and SSH on every device, and the Nautobot API, and tells you which
 one failed. A failed device check links back to [macOS networking](#macos-networking).
 
+## 6. A language model (Days 25–28, optional)
+
+Mock mode has a scripted model, so you can skip this. For a real one, on a Mac:
+
+```bash
+brew install ollama
+ollama serve              # leave it running, or start the Ollama app
+ollama pull qwen2.5:7b    # about 4.7 GB, once
+```
+
+The `LLM_*` defaults in `.env.example` already point at it. To use a mock lab with a real model,
+set `LAB_MODE=mock` and `LLM_MODE=live`. For a hosted provider, see
+[Day 25](../days/week-4/day-25-llm-activity/README.md).
+
 ## Mock mode
 
 Set `LAB_MODE=mock` in `.env` (or prefix a command: `LAB_MODE=mock uv run ...`). Device
@@ -143,6 +165,8 @@ To practise failures without breaking anything, mock mode has switches:
 | `MOCK_UNREACHABLE=bos-rtr-01,nyc-rtr-01` | Those devices act as if they're down |
 | `MOCK_AUTH_FAIL=1` | Every device rejects the login |
 | `MOCK_CLI_DELAY=3` | Each CLI command takes 3 seconds (Day 5) |
+| `MOCK_VERIFY_FAIL=bos-rtr-01` | Pushes to those devices don't stick, so the saga rolls back (Day 17) |
+| `MOCK_LLM_MALFORMED=1` | The scripted model's first attempt returns prose, not JSON (Day 25) |
 
 Workers read these when an activity runs, so change `.env` and restart the worker.
 
