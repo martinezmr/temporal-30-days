@@ -6,7 +6,7 @@ import asyncio
 from datetime import timedelta
 
 from temporalio import workflow
-from temporalio.common import TypedSearchAttributes
+from temporalio.common import SearchAttributePair, TypedSearchAttributes
 from temporalio.exceptions import ChildWorkflowError, WorkflowAlreadyStartedError
 from temporalio.workflow import ParentClosePolicy
 
@@ -104,7 +104,7 @@ class NetworkComplianceOrchestrator:
                             id=f"remediate-config-{drift.device}",
                             # Day 20: findable by device, and readable at a glance in the UI.
                             search_attributes=TypedSearchAttributes(
-                                [DEVICE_SA.value_set(drift.device)]
+                                [SearchAttributePair(DEVICE_SA, drift.device)]
                             ),
                             static_summary=(
                                 f"config remediation for {drift.device}"
@@ -134,7 +134,9 @@ class NetworkComplianceOrchestrator:
                     DeviceUpgradeWorkflow.run,
                     UpgradeRequest(device=drift.device, target_version=drift.expected),
                     id=f"upgrade-{drift.device}",
-                    search_attributes=TypedSearchAttributes([DEVICE_SA.value_set(drift.device)]),
+                    search_attributes=TypedSearchAttributes(
+                        [SearchAttributePair(DEVICE_SA, drift.device)]
+                    ),
                     static_summary=f"upgrade {drift.device} to {drift.expected}",
                     parent_close_policy=ParentClosePolicy.ABANDON,
                 )
