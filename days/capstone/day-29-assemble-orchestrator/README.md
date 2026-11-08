@@ -1,6 +1,6 @@
 # Day 29 — Assemble NetworkComplianceOrchestrator
 
-[← Week 4](../../week-4/README.md) · [Day 30 →](../day-30-ocp-cicd/README.md)
+[← Week 4](../../week-4/README.md) · [Day 30 →](../day-30-worker-versioning/README.md)
 
 ## Goal
 
