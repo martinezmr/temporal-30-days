@@ -1,0 +1,8 @@
+# Keep container builds (lab/Containerfile.worker) small: none of this belongs in an image.
+.git
+.venv
+.env
+output
+**/__pycache__
+**/.pytest_cache
+.superpowers
