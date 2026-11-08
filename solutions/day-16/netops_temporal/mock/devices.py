@@ -51,7 +51,8 @@ def cli(device: str, command: str) -> str:
 
 def running_config(device: str) -> str:
     _connect(device)
-    config = (FIXTURES / "configs" / f"{device}.cfg").read_text()
+    # Some fixtures don't end with a newline: add one, so pushed lines start on their own line.
+    config = (FIXTURES / "configs" / f"{device}.cfg").read_text().rstrip("\n") + "\n"
     # Day 14: lines "pushed" to the mock device are part of its config from then on.
     pushed = mock_state.applied_lines(device)
     return config + "".join(f"{line}\n" for line in pushed)

@@ -22,3 +22,10 @@ def test_state_is_a_file_under_output_dir(mock_lab):
     assert (mock_lab / "mock-state.json").exists()
     state.reset()
     assert state.applied_lines("nyc-rtr-01") == []
+
+
+def test_pushed_lines_are_their_own_lines_on_every_device():
+    # Some fixture configs don't end with a newline; a push must still be its own line.
+    for device in ["bos-acc-01", "bos-rtr-01", "nyc-acc-01", "nyc-rtr-01"]:
+        state.apply_lines(device, ["ntp server 192.0.2.10"])
+        assert "ntp server 192.0.2.10" in devices.running_config(device).splitlines()
