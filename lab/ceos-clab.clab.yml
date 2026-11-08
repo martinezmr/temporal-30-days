@@ -1,11 +1,13 @@
 ---
+# 4-node Arista cEOS lab. Deploy from a Linux host or VM:
+#   sudo containerlab deploy -t lab/ceos-clab.clab.yml
+# Management IPs are static so DEVICE_HOSTS in .env never changes between deploys.
 name: "ceos-lab"
 prefix: ""
 
 mgmt:
-  # network: "network-lab"
-  # ipv4-subnet: "172.24.78.0/24"
-  network: "bridge"
+  network: "clab-mgmt"
+  ipv4-subnet: "172.20.20.0/24"
 
 topology:
   kinds:
@@ -13,21 +15,25 @@ topology:
       image: "ceos:4.32.0F"
 
   nodes:
-    bos-acc-01:
-      kind: "ceos"
-      startup-config: "startup-configs/bos-acc-01.conf"
-
     bos-rtr-01:
       kind: "ceos"
+      mgmt-ipv4: "172.20.20.2"
       startup-config: "startup-configs/bos-rtr-01.conf"
 
-    nyc-acc-01:
+    bos-acc-01:
       kind: "ceos"
-      startup-config: "startup-configs/nyc-acc-01.conf"
+      mgmt-ipv4: "172.20.20.3"
+      startup-config: "startup-configs/bos-acc-01.conf"
 
     nyc-rtr-01:
       kind: "ceos"
+      mgmt-ipv4: "172.20.20.4"
       startup-config: "startup-configs/nyc-rtr-01.conf"
+
+    nyc-acc-01:
+      kind: "ceos"
+      mgmt-ipv4: "172.20.20.5"
+      startup-config: "startup-configs/nyc-acc-01.conf"
 
   links:
     - endpoints: ["bos-acc-01:eth1", "bos-rtr-01:eth1"]
