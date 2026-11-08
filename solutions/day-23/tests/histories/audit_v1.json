@@ -1,0 +1,1116 @@
+{
+  "events": [
+    {
+      "eventId": "1",
+      "eventTime": "2026-11-08T17:23:25.090022601Z",
+      "eventType": "EVENT_TYPE_WORKFLOW_EXECUTION_STARTED",
+      "taskId": "1056262",
+      "workflowExecutionStartedEventAttributes": {
+        "workflowType": {
+          "name": "ComplianceAuditWorkflow"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "e30="
+            }
+          ]
+        },
+        "workflowExecutionTimeout": "0s",
+        "workflowRunTimeout": "0s",
+        "workflowTaskTimeout": "10s",
+        "originalExecutionRunId": "01a1bc2f-b322-7055-84bc-32f0efb9faf7",
+        "identity": "temporal-cli:manny@Mannys-MacBook-Air.local",
+        "firstExecutionRunId": "01a1bc2f-b322-7055-84bc-32f0efb9faf7",
+        "attempt": 1,
+        "firstWorkflowTaskBackoff": "0s",
+        "header": {},
+        "workflowId": "audit-v1-example"
+      }
+    },
+    {
+      "eventId": "2",
+      "eventTime": "2026-11-08T17:23:25.090352434Z",
+      "eventType": "EVENT_TYPE_WORKFLOW_TASK_SCHEDULED",
+      "taskId": "1056263",
+      "workflowTaskScheduledEventAttributes": {
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "startToCloseTimeout": "10s",
+        "attempt": 1
+      }
+    },
+    {
+      "eventId": "3",
+      "eventTime": "2026-11-08T17:23:25.092924728Z",
+      "eventType": "EVENT_TYPE_WORKFLOW_TASK_STARTED",
+      "taskId": "1056268",
+      "workflowTaskStartedEventAttributes": {
+        "scheduledEventId": "2",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "7d42519e-57bb-4512-800e-c948a6871e24",
+        "historySizeBytes": "327",
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "4",
+      "eventTime": "2026-11-08T17:23:25.101210193Z",
+      "eventType": "EVENT_TYPE_WORKFLOW_TASK_COMPLETED",
+      "taskId": "1056272",
+      "workflowTaskCompletedEventAttributes": {
+        "scheduledEventId": "2",
+        "startedEventId": "3",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        },
+        "sdkMetadata": {
+          "coreUsedFlags": [
+            1,
+            4,
+            3,
+            2
+          ],
+          "sdkName": "temporal-python",
+          "sdkVersion": "1.35.0"
+        },
+        "meteringMetadata": {}
+      }
+    },
+    {
+      "eventId": "5",
+      "eventTime": "2026-11-08T17:23:25.101290943Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056273",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "1",
+        "activityType": {
+          "name": "fetch_device_intent"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJib3MtcnRyLTAxIn0="
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "4",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "6",
+      "eventTime": "2026-11-08T17:23:25.101313068Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056274",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "2",
+        "activityType": {
+          "name": "get_device_facts"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJib3MtcnRyLTAxIn0="
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "4",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "7",
+      "eventTime": "2026-11-08T17:23:25.101322818Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056275",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "3",
+        "activityType": {
+          "name": "fetch_device_intent"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJib3MtYWNjLTAxIn0="
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "4",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "8",
+      "eventTime": "2026-11-08T17:23:25.101330193Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056276",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "4",
+        "activityType": {
+          "name": "get_device_facts"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJib3MtYWNjLTAxIn0="
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "4",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "9",
+      "eventTime": "2026-11-08T17:23:25.101344985Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056277",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "5",
+        "activityType": {
+          "name": "fetch_device_intent"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJueWMtcnRyLTAxIn0="
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "4",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "10",
+      "eventTime": "2026-11-08T17:23:25.101356777Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056278",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "6",
+        "activityType": {
+          "name": "get_device_facts"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJueWMtcnRyLTAxIn0="
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "4",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "11",
+      "eventTime": "2026-11-08T17:23:25.101363568Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056279",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "7",
+        "activityType": {
+          "name": "fetch_device_intent"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJueWMtYWNjLTAxIn0="
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "4",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "12",
+      "eventTime": "2026-11-08T17:23:25.101369985Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056280",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "8",
+        "activityType": {
+          "name": "get_device_facts"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJueWMtYWNjLTAxIn0="
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "4",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "13",
+      "eventTime": "2026-11-08T17:23:25.102752694Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056300",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "12",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "def9e8ff-e257-4935-aef2-1d5ba0fe6ddf",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "14",
+      "eventTime": "2026-11-08T17:23:25.107828199Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056301",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJueWMtYWNjLTAxIiwibW9kZWwiOiJjRU9TTGFiIiwidmVyc2lvbiI6IjQuMzIuMEYifQ=="
+            }
+          ]
+        },
+        "scheduledEventId": "12",
+        "startedEventId": "13",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "15",
+      "eventTime": "2026-11-08T17:23:25.107838115Z",
+      "eventType": "EVENT_TYPE_WORKFLOW_TASK_SCHEDULED",
+      "taskId": "1056302",
+      "workflowTaskScheduledEventAttributes": {
+        "taskQueue": {
+          "name": "53457@Mannys-MacBook-Air.local-af48278f4d3c4db18d08fb5937c49213",
+          "kind": "TASK_QUEUE_KIND_STICKY",
+          "normalName": "netops-orchestration"
+        },
+        "startToCloseTimeout": "10s",
+        "attempt": 1
+      }
+    },
+    {
+      "eventId": "16",
+      "eventTime": "2026-11-08T17:23:25.104178987Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056307",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "7",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "84cc73b7-0f06-4bbc-98ad-bb2c880ea82e",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "17",
+      "eventTime": "2026-11-08T17:23:25.108635532Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056308",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJib3MtYWNjLTAxIiwicm9sZSI6ImFjY2VzcyIsImxvY2F0aW9uIjoiQk9TIiwidGFyZ2V0X3ZlcnNpb24iOiI0LjMyLjBGIn0="
+            }
+          ]
+        },
+        "scheduledEventId": "7",
+        "startedEventId": "16",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "18",
+      "eventTime": "2026-11-08T17:23:25.104870654Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056311",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "8",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "ec61a78c-2506-49e9-86c3-66c6c1a32acd",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "19",
+      "eventTime": "2026-11-08T17:23:25.109451825Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056312",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJib3MtYWNjLTAxIiwibW9kZWwiOiJjRU9TTGFiIiwidmVyc2lvbiI6IjQuMzIuMEYifQ=="
+            }
+          ]
+        },
+        "scheduledEventId": "8",
+        "startedEventId": "18",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "20",
+      "eventTime": "2026-11-08T17:23:25.104617696Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056314",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "9",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "4a8775d9-bbd4-4aa3-91e1-d7b4cac116be",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "21",
+      "eventTime": "2026-11-08T17:23:25.109700367Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056315",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJueWMtcnRyLTAxIiwicm9sZSI6InJvdXRlciIsImxvY2F0aW9uIjoiTllDIiwidGFyZ2V0X3ZlcnNpb24iOiI0LjMyLjBGIn0="
+            }
+          ]
+        },
+        "scheduledEventId": "9",
+        "startedEventId": "20",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "22",
+      "eventTime": "2026-11-08T17:23:25.105108780Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056318",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "11",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "a89726cb-509c-4643-a918-74adeec69570",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "23",
+      "eventTime": "2026-11-08T17:23:25.109966867Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056319",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJueWMtYWNjLTAxIiwicm9sZSI6ImFjY2VzcyIsImxvY2F0aW9uIjoiTllDIiwidGFyZ2V0X3ZlcnNpb24iOiI0LjMzLjFGIn0="
+            }
+          ]
+        },
+        "scheduledEventId": "11",
+        "startedEventId": "22",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "24",
+      "eventTime": "2026-11-08T17:23:25.105987864Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056322",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "10",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "7980b2c3-c8c9-4ea0-a902-64746995a8eb",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "25",
+      "eventTime": "2026-11-08T17:23:25.110515826Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056323",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJueWMtcnRyLTAxIiwibW9kZWwiOiJjRU9TTGFiIiwidmVyc2lvbiI6IjQuMzIuMEYifQ=="
+            }
+          ]
+        },
+        "scheduledEventId": "10",
+        "startedEventId": "24",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "26",
+      "eventTime": "2026-11-08T17:23:25.106570989Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056326",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "5",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "d18aba91-ba2e-4b7c-bd81-21b0b1416e09",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "27",
+      "eventTime": "2026-11-08T17:23:25.110826534Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056327",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJib3MtcnRyLTAxIiwicm9sZSI6InJvdXRlciIsImxvY2F0aW9uIjoiQk9TIiwidGFyZ2V0X3ZlcnNpb24iOiI0LjMyLjBGIn0="
+            }
+          ]
+        },
+        "scheduledEventId": "5",
+        "startedEventId": "26",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "28",
+      "eventTime": "2026-11-08T17:23:25.107193531Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056330",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "6",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "81b3c6ef-d02b-40aa-bd9a-8dd43e889d2c",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "29",
+      "eventTime": "2026-11-08T17:23:25.111214368Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056331",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJib3MtcnRyLTAxIiwibW9kZWwiOiJjRU9TTGFiIiwidmVyc2lvbiI6IjQuMzIuMEYifQ=="
+            }
+          ]
+        },
+        "scheduledEventId": "6",
+        "startedEventId": "28",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "30",
+      "eventTime": "2026-11-08T17:23:25.111690993Z",
+      "eventType": "EVENT_TYPE_WORKFLOW_TASK_STARTED",
+      "taskId": "1056333",
+      "workflowTaskStartedEventAttributes": {
+        "scheduledEventId": "15",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "ddbae50d-57ea-4552-a69e-99a255d8b281",
+        "historySizeBytes": "4495",
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "31",
+      "eventTime": "2026-11-08T17:23:25.115872038Z",
+      "eventType": "EVENT_TYPE_WORKFLOW_TASK_COMPLETED",
+      "taskId": "1056337",
+      "workflowTaskCompletedEventAttributes": {
+        "scheduledEventId": "15",
+        "startedEventId": "30",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        },
+        "sdkMetadata": {},
+        "meteringMetadata": {}
+      }
+    },
+    {
+      "eventId": "32",
+      "eventTime": "2026-11-08T17:23:25.115900455Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056338",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "9",
+        "activityType": {
+          "name": "check_config_compliance"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJib3MtYWNjLTAxIiwicmVxdWlyZWRfbGluZXMiOlsibnRwIHNlcnZlciAxOTIuMC4yLjEwIl19"
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "31",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "33",
+      "eventTime": "2026-11-08T17:23:25.115915955Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056339",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "10",
+        "activityType": {
+          "name": "check_config_compliance"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJueWMtYWNjLTAxIiwicmVxdWlyZWRfbGluZXMiOlsibnRwIHNlcnZlciAxOTIuMC4yLjEwIl19"
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "31",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "34",
+      "eventTime": "2026-11-08T17:23:25.115922997Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056340",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "11",
+        "activityType": {
+          "name": "check_config_compliance"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJueWMtcnRyLTAxIiwicmVxdWlyZWRfbGluZXMiOlsibnRwIHNlcnZlciAxOTIuMC4yLjEwIiwibG9nZ2luZyBob3N0IDE5Mi4wLjIuNTAiXX0="
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "31",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "35",
+      "eventTime": "2026-11-08T17:23:25.115928913Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
+      "taskId": "1056341",
+      "activityTaskScheduledEventAttributes": {
+        "activityId": "12",
+        "activityType": {
+          "name": "check_config_compliance"
+        },
+        "taskQueue": {
+          "name": "netops-orchestration",
+          "kind": "TASK_QUEUE_KIND_NORMAL"
+        },
+        "header": {},
+        "input": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJkZXZpY2UiOiJib3MtcnRyLTAxIiwicmVxdWlyZWRfbGluZXMiOlsibnRwIHNlcnZlciAxOTIuMC4yLjEwIiwibG9nZ2luZyBob3N0IDE5Mi4wLjIuNTAiXX0="
+            }
+          ]
+        },
+        "scheduleToCloseTimeout": "0s",
+        "scheduleToStartTimeout": "0s",
+        "startToCloseTimeout": "60s",
+        "heartbeatTimeout": "0s",
+        "workflowTaskCompletedEventId": "31",
+        "retryPolicy": {
+          "initialInterval": "1s",
+          "backoffCoefficient": 2.0,
+          "maximumInterval": "100s",
+          "maximumAttempts": 3
+        },
+        "useWorkflowBuildId": true,
+        "priority": {}
+      }
+    },
+    {
+      "eventId": "36",
+      "eventTime": "2026-11-08T17:23:25.116916164Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056352",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "34",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "f4c1fe0d-14d2-422b-833a-3d7206e38179",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "37",
+      "eventTime": "2026-11-08T17:23:25.119059499Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056353",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "WyJudHAgc2VydmVyIDE5Mi4wLjIuMTAiLCJsb2dnaW5nIGhvc3QgMTkyLjAuMi41MCJd"
+            }
+          ]
+        },
+        "scheduledEventId": "34",
+        "startedEventId": "36",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "38",
+      "eventTime": "2026-11-08T17:23:25.119062999Z",
+      "eventType": "EVENT_TYPE_WORKFLOW_TASK_SCHEDULED",
+      "taskId": "1056354",
+      "workflowTaskScheduledEventAttributes": {
+        "taskQueue": {
+          "name": "53457@Mannys-MacBook-Air.local-af48278f4d3c4db18d08fb5937c49213",
+          "kind": "TASK_QUEUE_KIND_STICKY",
+          "normalName": "netops-orchestration"
+        },
+        "startToCloseTimeout": "10s",
+        "attempt": 1
+      }
+    },
+    {
+      "eventId": "39",
+      "eventTime": "2026-11-08T17:23:25.117187289Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056359",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "33",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "d18ae9ea-d591-47d6-8f21-a9589b0b82bd",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "40",
+      "eventTime": "2026-11-08T17:23:25.119523583Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056360",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "WyJudHAgc2VydmVyIDE5Mi4wLjIuMTAiXQ=="
+            }
+          ]
+        },
+        "scheduledEventId": "33",
+        "startedEventId": "39",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "41",
+      "eventTime": "2026-11-08T17:23:25.117400831Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056363",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "35",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "cecb1c23-6edc-4367-b15b-eccf13c6a43d",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "42",
+      "eventTime": "2026-11-08T17:23:25.120068083Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056364",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "WyJudHAgc2VydmVyIDE5Mi4wLjIuMTAiLCJsb2dnaW5nIGhvc3QgMTkyLjAuMi41MCJd"
+            }
+          ]
+        },
+        "scheduledEventId": "35",
+        "startedEventId": "41",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "43",
+      "eventTime": "2026-11-08T17:23:25.117849373Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED",
+      "taskId": "1056367",
+      "activityTaskStartedEventAttributes": {
+        "scheduledEventId": "32",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "7253702d-fef3-4ccb-ae45-d58dc1669d28",
+        "attempt": 1,
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "44",
+      "eventTime": "2026-11-08T17:23:25.120409542Z",
+      "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
+      "taskId": "1056368",
+      "activityTaskCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "WyJudHAgc2VydmVyIDE5Mi4wLjIuMTAiXQ=="
+            }
+          ]
+        },
+        "scheduledEventId": "32",
+        "startedEventId": "43",
+        "identity": "53457@Mannys-MacBook-Air.local"
+      }
+    },
+    {
+      "eventId": "45",
+      "eventTime": "2026-11-08T17:23:25.120927042Z",
+      "eventType": "EVENT_TYPE_WORKFLOW_TASK_STARTED",
+      "taskId": "1056370",
+      "workflowTaskStartedEventAttributes": {
+        "scheduledEventId": "38",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "requestId": "abad367d-ac9a-4f08-8620-067987171c37",
+        "historySizeBytes": "6852",
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        }
+      }
+    },
+    {
+      "eventId": "46",
+      "eventTime": "2026-11-08T17:23:25.124122462Z",
+      "eventType": "EVENT_TYPE_WORKFLOW_TASK_COMPLETED",
+      "taskId": "1056374",
+      "workflowTaskCompletedEventAttributes": {
+        "scheduledEventId": "38",
+        "startedEventId": "45",
+        "identity": "53457@Mannys-MacBook-Air.local",
+        "workerVersion": {
+          "buildId": "a987dd6b02cc00df689043e458f52a27"
+        },
+        "sdkMetadata": {},
+        "meteringMetadata": {}
+      }
+    },
+    {
+      "eventId": "47",
+      "eventTime": "2026-11-08T17:23:25.124145128Z",
+      "eventType": "EVENT_TYPE_WORKFLOW_EXECUTION_COMPLETED",
+      "taskId": "1056375",
+      "workflowExecutionCompletedEventAttributes": {
+        "result": {
+          "payloads": [
+            {
+              "metadata": {
+                "encoding": "anNvbi9wbGFpbg=="
+              },
+              "data": "eyJzdGFydGVkX2F0IjoiMjAyNi0xMS0wOFQxNzoyMzoyNS4wOTI5MjVaIiwic3RhdGVzIjp7ImJvcy1ydHItMDEiOnsiZGV2aWNlIjoiYm9zLXJ0ci0wMSIsInN0YXR1cyI6ImRyaWZ0ZWQiLCJkcmlmdCI6W3siZGV2aWNlIjoiYm9zLXJ0ci0wMSIsImtpbmQiOiJjb25maWciLCJleHBlY3RlZCI6IjIgcG9saWN5IGxpbmUocykgcHJlc2VudCIsImFjdHVhbCI6IjIgbWlzc2luZyIsIm1pc3NpbmdfbGluZXMiOlsibnRwIHNlcnZlciAxOTIuMC4yLjEwIiwibG9nZ2luZyBob3N0IDE5Mi4wLjIuNTAiXX1dLCJjaGVja2VkX2F0IjoiMjAyNi0xMS0wOFQxNzoyMzoyNS4xMjA5MjdaIiwiZXJyb3IiOm51bGwsInJlbWVkaWF0aW9uIjpudWxsfSwiYm9zLWFjYy0wMSI6eyJkZXZpY2UiOiJib3MtYWNjLTAxIiwic3RhdHVzIjoiZHJpZnRlZCIsImRyaWZ0IjpbeyJkZXZpY2UiOiJib3MtYWNjLTAxIiwia2luZCI6ImNvbmZpZyIsImV4cGVjdGVkIjoiMSBwb2xpY3kgbGluZShzKSBwcmVzZW50IiwiYWN0dWFsIjoiMSBtaXNzaW5nIiwibWlzc2luZ19saW5lcyI6WyJudHAgc2VydmVyIDE5Mi4wLjIuMTAiXX1dLCJjaGVja2VkX2F0IjoiMjAyNi0xMS0wOFQxNzoyMzoyNS4xMjA5MjdaIiwiZXJyb3IiOm51bGwsInJlbWVkaWF0aW9uIjpudWxsfSwibnljLXJ0ci0wMSI6eyJkZXZpY2UiOiJueWMtcnRyLTAxIiwic3RhdHVzIjoiZHJpZnRlZCIsImRyaWZ0IjpbeyJkZXZpY2UiOiJueWMtcnRyLTAxIiwia2luZCI6ImNvbmZpZyIsImV4cGVjdGVkIjoiMiBwb2xpY3kgbGluZShzKSBwcmVzZW50IiwiYWN0dWFsIjoiMiBtaXNzaW5nIiwibWlzc2luZ19saW5lcyI6WyJudHAgc2VydmVyIDE5Mi4wLjIuMTAiLCJsb2dnaW5nIGhvc3QgMTkyLjAuMi41MCJdfV0sImNoZWNrZWRfYXQiOiIyMDI2LTExLTA4VDE3OjIzOjI1LjEyMDkyN1oiLCJlcnJvciI6bnVsbCwicmVtZWRpYXRpb24iOm51bGx9LCJueWMtYWNjLTAxIjp7ImRldmljZSI6Im55Yy1hY2MtMDEiLCJzdGF0dXMiOiJkcmlmdGVkIiwiZHJpZnQiOlt7ImRldmljZSI6Im55Yy1hY2MtMDEiLCJraW5kIjoidmVyc2lvbiIsImV4cGVjdGVkIjoiNC4zMy4xRiIsImFjdHVhbCI6IjQuMzIuMEYiLCJtaXNzaW5nX2xpbmVzIjpbXX0seyJkZXZpY2UiOiJueWMtYWNjLTAxIiwia2luZCI6ImNvbmZpZyIsImV4cGVjdGVkIjoiMSBwb2xpY3kgbGluZShzKSBwcmVzZW50IiwiYWN0dWFsIjoiMSBtaXNzaW5nIiwibWlzc2luZ19saW5lcyI6WyJudHAgc2VydmVyIDE5Mi4wLjIuMTAiXX1dLCJjaGVja2VkX2F0IjoiMjAyNi0xMS0wOFQxNzoyMzoyNS4xMjA5MjdaIiwiZXJyb3IiOm51bGwsInJlbWVkaWF0aW9uIjpudWxsfX19"
+            }
+          ]
+        },
+        "workflowTaskCompletedEventId": "46"
+      }
+    }
+  ]
+}
