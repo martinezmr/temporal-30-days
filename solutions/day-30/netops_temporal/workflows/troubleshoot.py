@@ -16,6 +16,7 @@ never reaches a human.
 from datetime import timedelta
 
 from temporalio import workflow
+from temporalio.common import VersioningBehavior
 from temporalio.exceptions import NexusOperationError
 
 with workflow.unsafe.imports_passed_through():
@@ -34,6 +35,7 @@ with workflow.unsafe.imports_passed_through():
         TroubleshootRequest,
     )
     from netops_temporal.nexus.service import ComplianceService
+    from netops_temporal.versioning import behavior
 
 
 def config_lines(proposal: ChangeProposal) -> ChangeProposal:
@@ -41,7 +43,9 @@ def config_lines(proposal: ChangeProposal) -> ChangeProposal:
     return proposal.model_copy(update={"lines": lines})
 
 
-@workflow.defn
+# Day 30: can wait a long time for a person, so it moves to each new build, rather than keeping
+# an old one running until someone answers (and changes to it need patching).
+@workflow.defn(versioning_behavior=behavior(VersioningBehavior.AUTO_UPGRADE))
 class TroubleshootWorkflow:
     def __init__(self) -> None:
         self._stage = "investigating"

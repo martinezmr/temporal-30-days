@@ -69,8 +69,9 @@ Live runs found real bugs that the tests had missed. All of these are fixed:
 
 ## Still open
 
-The deferred Phase 1 minors M7, M8, M9 and M11 weren't addressed. Their descriptions aren't in the
-repo or in PR #1's description and comments, so someone needs to supply them or drop them.
+`DeviceEntityWorkflow` and `TroubleshootWorkflow` auto-upgrade but have no recorded history, so the
+replay test can't catch a breaking change to them. Day 30 says so. Recording a troubleshoot history
+is more work than the others, because the agent plugin brings its own payload converter.
 
 ## What to judge
 
@@ -78,11 +79,8 @@ repo or in PR #1's description and comments, so someone needs to supply them or 
    about 4.7 GB, and agent runs took 46 s in testing.
 2. **Time per day.** The README says 60–90 minutes, but Days 29 and 30 are marked as 2 hours. Change
    the promise, or trim those days?
-3. **Which workflows are pinned.** On Day 30, everything that doesn't declare a behavior is pinned,
-   including `TroubleshootWorkflow`, which can wait on a person and so hold its old build's workers
-   up. Should it auto-upgrade instead?
-4. **`behavior()`.** Workflows read `BUILD_ID` to decide what to declare, so Days 1–29 keep running
+3. **`behavior()`.** Workflows read `BUILD_ID` to decide what to declare, so Days 1–29 keep running
    unversioned. It works and is tested, but it's the least obvious code in the course.
-5. **Week 4 and the capstone.** Read Days 23, 26 and 29 end to end. Is that much concept too much for
+4. **Week 4 and the capstone.** Read Days 23, 26 and 29 end to end. Is that much concept too much for
    teammates who are new to Temporal?
-6. **Production mapping.** Does the table on Day 30 match how your workers will really be deployed?
+5. **Production mapping.** Does the table on Day 30 match how your workers will really be deployed?

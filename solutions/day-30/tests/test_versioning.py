@@ -2,18 +2,28 @@
 they started on, and auto-upgrade workflows move to the new one."""
 
 import asyncio
+import json
 import threading
 import uuid
 
-from temporalio.client import WorkflowExecutionStatus
+from temporalio.client import Client, WorkflowExecutionStatus
 from temporalio.common import VersioningBehavior
+from temporalio.contrib.openai_agents.testing import AgentEnvironment, ResponseBuilders, TestModel
+from temporalio.converter import DataConverter
 
 from netops_temporal.constants import COMPLIANCE_TASK_QUEUE
+from netops_temporal.llm.agent_models import netops_server
 from netops_temporal.mock import devices as mock_devices
-from netops_temporal.models import OrchestratorInput, RemediationRequest
+from netops_temporal.models import (
+    Decision,
+    OrchestratorInput,
+    RemediationRequest,
+    TroubleshootRequest,
+)
 from netops_temporal.versioning import set_current_version
 from netops_temporal.workflows.orchestrator import NetworkComplianceOrchestrator
 from netops_temporal.workflows.remediation import ConfigRemediationWorkflow
+from netops_temporal.workflows.troubleshoot import TroubleshootWorkflow
 
 NTP = "ntp server 192.0.2.10"
 
@@ -121,3 +131,47 @@ async def test_auto_upgrade_orchestrator_moves_to_v2(dev_env, start_workers, mon
             await handle.terminate()
     # Auto-upgrade: the same, still-running workflow carried on with v2's code.
     assert build == ("v2", VersioningBehavior.AUTO_UPGRADE)
+
+
+async def test_troubleshoot_waiting_on_a_person_moves_to_v2(dev_env, start_workers, monkeypatch):
+    model = TestModel.returning_responses(
+        [
+            ResponseBuilders.tool_call(
+                json.dumps({"lines": [NTP], "rationale": "the policy requires it"}),
+                "propose_change",
+            ),
+            ResponseBuilders.output_message("NTP is missing; I proposed adding it."),
+        ]
+    )
+    async with AgentEnvironment(model=model, mcp_servers={"netops": netops_server}) as agents:
+        client = agents.applied_on_client(
+            Client(**{**dev_env.client.config(), "data_converter": DataConverter.default})
+        )
+        monkeypatch.setenv("BUILD_ID", "v1")
+        async with start_workers(client) as v1:
+            await set_current_version(client, "v1")
+            handle = await client.start_workflow(
+                TroubleshootWorkflow.run,
+                TroubleshootRequest(
+                    device="bos-acc-01", symptom="NTP is wrong", requested_by="alice"
+                ),
+                id=f"troubleshoot-{uuid.uuid4()}",
+                task_queue=v1.task_queue,
+            )
+
+            async def awaiting_approval():
+                return await handle.query(TroubleshootWorkflow.stage) == "awaiting_approval"
+
+            await eventually(awaiting_approval)
+            assert await build_of(handle) == ("v1", VersioningBehavior.AUTO_UPGRADE)
+
+            monkeypatch.setenv("BUILD_ID", "v2")
+            async with start_workers(client):
+                await set_current_version(client, "v2")
+                # The approval arrives after the rollout: v1 doesn't have to wait for it.
+                await handle.execute_update(
+                    TroubleshootWorkflow.decide, Decision(approve=True, approver="bob")
+                )
+                report = await handle.result()
+    assert report.outcome == "approved by bob: pushed 1 line(s)"
+    assert await build_of(handle) == ("v2", VersioningBehavior.AUTO_UPGRADE)

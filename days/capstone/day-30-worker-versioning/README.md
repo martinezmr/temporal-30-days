@@ -37,10 +37,11 @@ Each workflow type declares how it behaves when a new build becomes current:
 | Behavior | A running workflow... | Needs patching? | In this course |
 | --- | --- | --- | --- |
 | `PINNED` | Finishes on the build it started on | No | `ConfigRemediationWorkflow`, `DeviceUpgradeWorkflow`, and every workflow that doesn't say otherwise |
-| `AUTO_UPGRADE` | Moves to the current build at its next workflow task | Yes | `NetworkComplianceOrchestrator`, `DeviceEntityWorkflow`, `DeviceWatchWorkflow` |
+| `AUTO_UPGRADE` | Moves to the current build at its next workflow task | Yes | `NetworkComplianceOrchestrator`, `DeviceEntityWorkflow`, `DeviceWatchWorkflow`, `TroubleshootWorkflow` |
 
 The cost of pinning is that the old workers must stay up until the last pinned workflow finishes.
-That's why a workflow that may wait for a long time, like one waiting on a person, is a poor fit.
+That's why `TroubleshootWorkflow` auto-upgrades: it can wait a long time for a person, and an old
+build shouldn't have to keep running until someone answers.
 
 ### A build's life
 
@@ -132,17 +133,24 @@ halves of the system on different builds.
 - `test_pinned_remediation_finishes_on_v1`: the push waits until v2 is current, so v2 always
   arrives in the middle of the saga. The remediation finishes on v1, and the next one runs on v2.
 - `test_auto_upgrade_orchestrator_moves_to_v2`: the same running orchestrator carries on with v2.
+- `test_troubleshoot_waiting_on_a_person_moves_to_v2`: the rollout happens during the wait for
+  approval, and the approved change is applied on v2.
 
 ### 5. The pipeline
 
 [`.github/workflows/ci.yml`](../../../.github/workflows/ci.yml) runs on every pull request. The
 stage that matters today is the replay test (Day 6), which runs inside `scripts/test-solutions.sh`
-and replays every history in `tests/histories/` against the new code. It's the gate for everything
-`AUTO_UPGRADE`: if it fails, running workflows wouldn't survive the move to your new build.
+and replays every history in `tests/histories/` against the new code. It's the gate for
+`AUTO_UPGRADE` workflows: if it fails, running workflows wouldn't survive the move to your new build.
 
-One limit: the replay test doesn't know about pinning. Change `ConfigRemediationWorkflow` and its
-recorded history fails, even though running remediations would stay on the old build. Decide which
-case you're in. If nothing running needs the new code, record a new history instead of patching.
+It has two limits:
+
+- **It only covers workflows with a recorded history.** The orchestrator and the watch have one, but
+  `DeviceEntityWorkflow` and `TroubleshootWorkflow` don't, so nothing stops a breaking change to them
+  here. Before you rely on this gate in production, record a history for every auto-upgrade workflow.
+- **It doesn't know about pinning.** Change `ConfigRemediationWorkflow` and its recorded history
+  fails, even though running remediations would stay on the old build. If nothing running needs the
+  new code, record a new history instead of patching.
 
 A full pipeline adds two stages this course doesn't run, because it has no registry or shared
 environment:
@@ -350,6 +358,7 @@ compliance system. Write your own summary in [`LEARNING.md`](../../../LEARNING.m
 
 [`solutions/day-30/`](../../../solutions/day-30/): new `versioning.py`; `deployment_config()` on
 every worker in `workers/` and in `tests/conftest.py`; `versioning_behavior` on the orchestrator,
-entity, watch, remediation and upgrade workflows. Tests: new `tests/test_versioning.py`. Also
+entity, watch, troubleshoot, remediation and upgrade workflows. Tests: new
+`tests/test_versioning.py`. Also
 [`lab/deploy.sh`](../../../lab/deploy.sh) and the replay comment in
 [`ci.yml`](../../../.github/workflows/ci.yml).
