@@ -99,10 +99,12 @@ async def test_interval_elapsing_runs_next_cycle(dev_env, dev_worker):
     await handle.terminate()
 
 
-async def test_set_interval_validated(workflow_env, worker):
+async def test_set_interval_validated(dev_env, dev_worker):
     from temporalio.client import WorkflowUpdateFailedError
 
-    handle = await start(workflow_env, worker)
+    # Day 28: on a real dev server, like test_continue_as_new_carries_state below: the
+    # time-skipping server sometimes leaves one of the cycle's Nexus operations hanging.
+    handle = await start(dev_env, dev_worker)
     await wait_for_cycles(handle, 1)
     assert (
         await handle.execute_update(
