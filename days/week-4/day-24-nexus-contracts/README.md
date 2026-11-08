@@ -85,18 +85,18 @@ class RemediationRequest(BaseModel):
 
 ```python
 # file: netops_temporal/nexus/handler.py
-# Day 24: typed errors, so callers know whether trying again could ever help.
-if req.device not in DEVICES:
-    # Can never work: BAD_REQUEST fails the operation at once, with no retries.
-    raise nexusrpc.HandlerError(
-        f"unknown device {req.device!r}", type=nexusrpc.HandlerErrorType.BAD_REQUEST
-    )
-if os.environ.get("REQUIRE_TICKET") == "1" and not req.change_ticket:
-    # Understood, and refused by the team's change rules: the operation fails.
-    raise nexusrpc.OperationError(
-        f"{req.device}: remediation needs a change ticket",
-        state=nexusrpc.OperationErrorState.FAILED,
-    )
+        # Day 24: typed errors, so callers know whether trying again could ever help.
+        if req.device not in DEVICES:
+            # Can never work: BAD_REQUEST fails the operation at once, with no retries.
+            raise nexusrpc.HandlerError(
+                f"unknown device {req.device!r}", type=nexusrpc.HandlerErrorType.BAD_REQUEST
+            )
+        if os.environ.get("REQUIRE_TICKET") == "1" and not req.change_ticket:
+            # Understood, and refused by the team's change rules: the operation fails.
+            raise nexusrpc.OperationError(
+                f"{req.device}: remediation needs a change ticket",
+                state=nexusrpc.OperationErrorState.FAILED,
+            )
 ```
 
 These checks run in the handler, before any workflow starts. So an unknown device never gets a

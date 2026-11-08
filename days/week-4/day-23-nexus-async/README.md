@@ -106,28 +106,28 @@ The input and output are the models Day 15's child already used.
 
 ```python
 # file: netops_temporal/nexus/handler.py
-@nexus.workflow_run_operation
-async def remediate(
-    self, ctx: nexus.WorkflowRunOperationContext, req: RemediationRequest
-) -> nexus.WorkflowHandle[RemediationResult]:
-    try:
-        return await ctx.start_workflow(
-            ConfigRemediationWorkflow.run,
-            req,
-            # Day 16's lock, now kept by the team that owns remediation.
-            id=f"remediate-config-{req.device}",
-            task_queue=COMPLIANCE_TASK_QUEUE,
-            search_attributes=TypedSearchAttributes(
-                [SearchAttributePair(DEVICE_SA, req.device)]
-            ),
-            static_summary=f"config remediation for {req.device}",  # (shortened)
-        )
-    except WorkflowAlreadyStartedError as err:
-        # Not worth retrying: fail the operation, with a message the caller can show.
-        raise nexusrpc.OperationError(
-            f"remediate-config-{req.device} already running",
-            state=nexusrpc.OperationErrorState.FAILED,
-        ) from err
+    @nexus.workflow_run_operation
+    async def remediate(
+        self, ctx: nexus.WorkflowRunOperationContext, req: RemediationRequest
+    ) -> nexus.WorkflowHandle[RemediationResult]:
+        try:
+            return await ctx.start_workflow(
+                ConfigRemediationWorkflow.run,
+                req,
+                # Day 16's lock, now kept by the team that owns remediation.
+                id=f"remediate-config-{req.device}",
+                task_queue=COMPLIANCE_TASK_QUEUE,
+                search_attributes=TypedSearchAttributes(
+                    [SearchAttributePair(DEVICE_SA, req.device)]
+                ),
+                ...
+            )
+        except WorkflowAlreadyStartedError as err:
+            # Not worth retrying: fail the operation, with a message the caller can show.
+            raise nexusrpc.OperationError(
+                f"remediate-config-{req.device} already running",
+                state=nexusrpc.OperationErrorState.FAILED,
+            ) from err
 ```
 
 `ctx.start_workflow` is the Nexus version of `client.start_workflow`. It also wires up the
@@ -170,18 +170,20 @@ and `device-io` in `default` are two different queues.
 
 ```python
 # file: netops_temporal/workflows/orchestrator.py
-async with self.remediation_slots:
-    # A Nexus operation instead of a child is a different command, so orchestrators from
-    # before keep starting children (Day 19).
-    if workflow.patched("remediate-via-nexus"):
-        try:
-            result = await self.remediate_via_nexus(drift, dry_run)
-        except NexusOperationError as err:
-            # e.g. "remediate-config-bos-acc-01 already running"
-            reason = err.cause.message if err.cause else err.message
-            return f"config: {reason}"
-    else:
-        ...  # Day 16's child, unchanged
+                async with self.remediation_slots:
+                    # Day 23: the compliance team runs remediations now, behind their Nexus
+                    # service. A Nexus operation instead of a child is a different command,
+                    # so orchestrators from before keep starting children (Day 19).
+                    if workflow.patched("remediate-via-nexus"):
+                        try:
+                            result = await self.remediate_via_nexus(drift, dry_run)
+                        except NexusOperationError as err:
+                            # The handler's message, e.g. "remediate-config-bos-acc-01 already
+                            # running" when someone else holds the ID (Day 16's lock).
+                            reason = err.cause.message if err.cause else err.message
+                            return f"config: {reason}"
+                    else:
+                        ...
 ```
 
 ```python

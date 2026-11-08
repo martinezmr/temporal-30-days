@@ -119,7 +119,7 @@ def runtime_with_metrics(port: int = 9464) -> Runtime:
                             id=f"remediate-config-{drift.device}",
                             # Day 20: findable by device, and readable at a glance in the UI.
                             search_attributes=TypedSearchAttributes(
-                                [DEVICE_SA.value_set(drift.device)]
+                                [SearchAttributePair(DEVICE_SA, drift.device)]
                             ),
                             static_summary=(
                                 f"config remediation for {drift.device}"
@@ -128,6 +128,9 @@ def runtime_with_metrics(port: int = 9464) -> Runtime:
                             static_details="Missing lines:\n"
                             + "\n".join(f"- `{line}`" for line in drift.missing_lines),
 ```
+
+A workflow starts with `TypedSearchAttributes([SearchAttributePair(key, value), ...])`. Changing
+them later (step 3, below) takes updates instead: `key.value_set(value)`.
 
 Upgrade children get `Device` and a summary too. After every cycle:
 
