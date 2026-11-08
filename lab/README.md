@@ -9,6 +9,7 @@ Full walkthrough: [docs/lab-setup.md](../docs/lab-setup.md).
 | `tunnels.sh` | SSH port forwards through a jump host when the cEOS management IPs aren't reachable from your laptop |
 | `nautobot/compose.yml`, `nautobot/start.sh` | Nautobot + PostgreSQL + Redis on http://localhost:8080 |
 | `nautobot/seed.py` | Creates the sites, roles and 4 devices with their `target_version` intent (safe to re-run) |
+| `deploy.sh` | Day 30: make a worker build current, or ramp to it, in both namespaces |
 
 ## Bring-up order
 

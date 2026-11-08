@@ -17,6 +17,8 @@ jobs:
       - run: uv run ruff check src tests solutions scripts lab
       - run: uv run pytest -q
       - run: uv run pytest -q lab/nautobot
+      # Includes the replay tests (Day 6): a workflow change that would break a recorded history
+      # fails here, before it can become a new build (Day 30).
       - run: scripts/test-solutions.sh
       - run: uv run python scripts/check_lessons.py
       - name: src/ starts identical to the Day 1 solution
