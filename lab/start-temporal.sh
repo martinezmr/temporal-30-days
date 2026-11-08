@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Temporal dev server + UI in a container, with persistence and a second namespace for Nexus.
+# Temporal dev server + UI in a container, with persistence, a second namespace for Nexus, and
+# the search attributes Day 20 uses.
 # Usage: ./lab/start-temporal.sh            (uses podman)
 #        ENGINE=docker ./lab/start-temporal.sh
 set -euo pipefail
@@ -16,8 +17,11 @@ NAME="${NAME:-temporal-dev}"
   docker.io/temporalio/admin-tools:latest \
   temporal server start-dev --ip 0.0.0.0 \
     --db-filename /data/temporal.db \
-    --namespace compliance
+    --namespace compliance \
+    --search-attribute Device=Keyword \
+    --search-attribute ComplianceStatus=Keyword
 
 echo "Temporal UI:   http://localhost:8233"
 echo "Temporal gRPC: localhost:7233"
 echo "Namespaces:    default, compliance"
+echo "Search attributes (Day 20): Device, ComplianceStatus"

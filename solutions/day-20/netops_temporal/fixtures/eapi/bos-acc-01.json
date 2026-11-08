@@ -1,0 +1,142 @@
+{
+  "show version": {
+    "mfgName": "Arista",
+    "modelName": "cEOSLab",
+    "hardwareRevision": "",
+    "serialNumber": "",
+    "systemMacAddress": "00:1c:73:30:e9:ed",
+    "hwMacAddress": "00:00:00:00:00:00",
+    "configMacAddress": "00:00:00:00:00:00",
+    "version": "4.32.0F-36401836.4320F (engineering build)",
+    "architecture": "x86_64",
+    "internalVersion": "4.32.0F-36401836.4320F",
+    "internalBuildId": "e97bbe15-478c-45d1-84fa-332db23aef84",
+    "imageFormatVersion": "1.0",
+    "imageOptimization": "None",
+    "cEosToolsVersion": "(unknown)",
+    "kernelVersion": "7.2.12-orbstack-00394-gbecdd6130068",
+    "bootupTimestamp": 1794096530.6398952,
+    "uptime": 641.7365815639496,
+    "memTotal": 16424796,
+    "memFree": 2740092,
+    "isIntlVersion": false
+  },
+  "show lldp neighbors": {
+    "tablesLastChangeTime": 1794096581.0479045,
+    "tablesInserts": 5,
+    "tablesDeletes": 0,
+    "tablesDrops": 0,
+    "tablesAgeOuts": 0,
+    "lldpNeighbors": [
+      {
+        "port": "Ethernet1",
+        "neighborDevice": "bos-rtr-01",
+        "neighborPort": "Ethernet1",
+        "ttl": 120
+      },
+      {
+        "port": "Ethernet2",
+        "neighborDevice": "nyc-rtr-01",
+        "neighborPort": "Ethernet2",
+        "ttl": 120
+      },
+      {
+        "port": "Management0",
+        "neighborDevice": "nyc-acc-01",
+        "neighborPort": "Management0",
+        "ttl": 120
+      },
+      {
+        "port": "Management0",
+        "neighborDevice": "bos-rtr-01",
+        "neighborPort": "Management0",
+        "ttl": 120
+      },
+      {
+        "port": "Management0",
+        "neighborDevice": "nyc-rtr-01",
+        "neighborPort": "Management0",
+        "ttl": 120
+      }
+    ]
+  },
+  "show ip interface brief": {
+    "interfaces": {
+      "Ethernet1": {
+        "name": "Ethernet1",
+        "lineProtocolStatus": "up",
+        "interfaceStatus": "connected",
+        "mtu": 1500,
+        "ipv4Routable240": false,
+        "ipv4Routable0": false,
+        "interfaceAddress": {
+          "ipAddr": {
+            "address": "10.10.10.1",
+            "maskLen": 30
+          }
+        },
+        "nonRoutableClassEIntf": false
+      },
+      "Ethernet2": {
+        "name": "Ethernet2",
+        "lineProtocolStatus": "up",
+        "interfaceStatus": "connected",
+        "mtu": 1500,
+        "ipv4Routable240": false,
+        "ipv4Routable0": false,
+        "interfaceAddress": {
+          "ipAddr": {
+            "address": "10.10.10.14",
+            "maskLen": 30
+          }
+        },
+        "nonRoutableClassEIntf": false
+      },
+      "Loopback0": {
+        "name": "Loopback0",
+        "lineProtocolStatus": "up",
+        "interfaceStatus": "connected",
+        "mtu": 65535,
+        "ipv4Routable240": false,
+        "ipv4Routable0": false,
+        "interfaceAddress": {
+          "ipAddr": {
+            "address": "10.0.0.1",
+            "maskLen": 32
+          }
+        },
+        "nonRoutableClassEIntf": false
+      },
+      "Loopback100": {
+        "name": "Loopback100",
+        "lineProtocolStatus": "up",
+        "interfaceStatus": "connected",
+        "mtu": 65535,
+        "ipv4Routable240": false,
+        "ipv4Routable0": false,
+        "interfaceAddress": {
+          "ipAddr": {
+            "address": "192.168.101.100",
+            "maskLen": 24
+          }
+        },
+        "nonRoutableClassEIntf": false
+      },
+      "Management0": {
+        "name": "Management0",
+        "lineProtocolStatus": "up",
+        "interfaceStatus": "connected",
+        "mtu": 1500,
+        "ipv4Routable240": false,
+        "ipv4Routable0": false,
+        "interfaceAddress": {
+          "ipAddr": {
+            "address": "172.17.0.5",
+            "maskLen": 16
+          }
+        },
+        "nonRoutableClassEIntf": false
+      }
+    }
+  }
+}
