@@ -2,6 +2,9 @@
 
 [← Day 20](../day-20-observability/README.md) · [Week 4 →](../../week-4/README.md)
 
+> **Outline, not yet rewritten.** This day still describes OpenShift; the course is now local-only.
+> It's being rewritten as part of Days 8–30. See the [course README](../../../README.md#the-30-days).
+
 ## Goal
 
 Workers you'd be comfortable running in OpenShift: split by job, gentle on devices, no secrets in history, packaged as a container.

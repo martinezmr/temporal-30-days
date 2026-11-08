@@ -8,7 +8,7 @@
     "8233": { "label": "Temporal UI", "onAutoForward": "openBrowser" },
     "7233": { "label": "Temporal gRPC", "onAutoForward": "silent" }
   },
-  "containerEnv": { "DEVICE_MODE": "mock" },
+  "containerEnv": { "LAB_MODE": "mock" },
   "customizations": {
     "vscode": {
       "extensions": ["ms-python.python", "charliermarsh.ruff"]

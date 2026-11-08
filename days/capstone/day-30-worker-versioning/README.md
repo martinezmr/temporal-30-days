@@ -1,6 +1,9 @@
-# Day 30 — Containers, CI/CD and OpenShift
+# Day 30 — Worker Versioning locally + CI (outline)
 
 [← Day 29](../day-29-assemble-orchestrator/README.md) · [Back to start](../../../README.md)
+
+> **Outline, not yet rewritten.** This day still describes OpenShift; the course is now local-only.
+> It's being rewritten as part of Days 8–30. See the [course README](../../../README.md#the-30-days).
 
 ## Goal
 
