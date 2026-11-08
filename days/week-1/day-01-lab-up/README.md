@@ -211,9 +211,12 @@ async def main() -> None:
 ```
 
 A worker is a connection to the server, a task queue to poll, and the list of workflow and
-activity types it can run. **If a type isn't registered here, this worker can't run it**: a
-workflow that calls an unregistered activity will sit waiting for a worker that has it. Each day
-you'll add the new workflows and activities to these lists.
+activity types it can run. **If a type isn't registered here, this worker can't run it.** If a
+workflow calls an activity that isn't in the list, the worker still picks up the task, then fails
+it with `NotFoundError: Activity function ... is not registered on this worker`. Temporal retries
+it like any other failure, so the workflow stays Running with that message as the activity's
+**Last Failure**. (A workflow type that isn't registered shows up as a `WorkflowTaskFailed` event
+instead.) Each day you'll add the new workflows and activities to these lists.
 
 ### The starter: `starters/hello.py`
 
@@ -348,8 +351,9 @@ That split is what lets Temporal retry a failed activity without re-running the 
 2. The worker holds no state that matters. The history lives on the server. A restarted worker
    (or any other worker on the same queue) gets the history and carries on from the last
    recorded event.
-3. No worker is polling that task queue (none running, or a typo in the queue name), or the
-   worker doesn't have the workflow/activity type registered.
+3. No worker is polling that task queue (none running, or a typo in the queue name). Or the
+   worker doesn't have the workflow or activity type registered: then the history or the pending
+   activity shows a "not registered" failure being retried.
 4. The workflow ID. While `hello-manny` is running, starting another workflow with the ID
    `hello-manny` fails.
 

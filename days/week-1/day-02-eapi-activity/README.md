@@ -177,7 +177,9 @@ itself. The same activity can be called patiently by one workflow and impatientl
 
 ```python
 # file: netops_temporal/workers/main.py
-    # Sync (`def`) activities run on this thread pool: up to 10 at once.
+    # Sync (`def`) activities run on this thread pool: up to 10 at once. The worker must not
+    # accept more activities than that (the SDK default is 100), or the extras wait inside
+    # the worker with their timeouts already running.
     with ThreadPoolExecutor(max_workers=10) as executor:
         worker = Worker(
             client,
@@ -185,12 +187,22 @@ itself. The same activity can be called patiently by one workflow and impatientl
             workflows=[HelloWorkflow, GetFactsWorkflow],
             activities=[say_hello, get_device_facts],
             activity_executor=executor,
+            max_concurrent_activities=10,
         )
 ```
 
 Without `activity_executor`, the worker refuses to start and tells you a sync activity needs one.
-`max_workers=10` means at most 10 device activities run at once on this worker; the 11th waits
-in the task queue. Day 7 shows why that number matters.
+
+Two numbers, and they must match:
+
+- `max_workers=10` is the thread pool: how many `def` activities can *run* at once.
+- `max_concurrent_activities=10` is the worker's **activity slots**: how many activity tasks it
+  *accepts* from the server at once. The default is 100.
+
+With 10 threads and 100 slots, the worker would accept 100 activities and run 10. The other 90
+would wait inside the worker, with their start-to-close timeouts already counting, instead of
+waiting in the task queue where another worker could pick them up. Matching the two means the
+11th activity stays in the task queue until a thread is free. Day 7 shows why that number matters.
 
 ### 5. `starters/facts.py`: one workflow per device
 
@@ -249,14 +261,17 @@ In the UI, open `facts-bos-rtr-01`. The history looks like Day 1's, but the acti
    - Mock: set `MOCK_UNREACHABLE=bos-rtr-01` in `.env` and restart the worker.
 
    Then run `... starters.facts bos-rtr-01`. In the UI, open the workflow and look at
-   **Pending Activities**: the attempt count climbs (2, 3, 4...), **Last Failure** shows the error
-   (live, pyeapi says `Socket error during eAPI connection: [Errno 61] Connection refused`),
-   and **Next Retry** counts down 2 s, 4 s, 8 s. The worker logs one line per attempt, each tagged
+   **Pending Activities**: the attempt count climbs (2, 3, 4...), **Last Failure** shows the error, and
+   **Next Retry** counts down 2 s, 4 s, 8 s. What the error says depends on how you reach the
+   lab: through `lab/tunnels.sh` with the tunnel stopped, pyeapi says
+   `Socket error during eAPI connection: [Errno 61] Connection refused` at once; on a routed lab
+   with the container stopped, each attempt waits for pyeapi's 10 s timeout first. The worker logs one line per attempt, each tagged
    with its `attempt` number.
 2. **Bring it back before attempt 5** (`docker start bos-rtr-01`, restart the tunnels, or clear
    `MOCK_UNREACHABLE` and restart the worker). The next attempt succeeds and the starter prints
    the facts. No code change, no rerun. The workflow was waiting all along.
-3. **Let it run out.** Take the device away again and wait about 30 s. The starter prints a
+3. **Let it run out.** Take the device away again and wait: about 30 s of backoff, plus up to
+   10 s per attempt if each one times out (so up to ~80 s on a routed lab). The starter prints a
    `WorkflowFailureError`. In the UI the workflow is **Failed**; expand the failure: the
    workflow failed *because* an `ActivityError` (after 5 attempts) was caused by the pyeapi
    connection error. That chain (workflow ← activity ← root cause) is how every Temporal failure

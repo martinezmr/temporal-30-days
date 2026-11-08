@@ -107,6 +107,7 @@ async def worker(workflow_env):
             workflows=WORKFLOWS,
             activities=ACTIVITIES,
             activity_executor=executor,
+            max_concurrent_activities=10,
         ) as running:
             yield running
 ```
@@ -241,8 +242,9 @@ uv run pytest -q -k replay
    workflows would break. Only replay tests catch this class of bug, which is why they go in CI
    (Day 30).
 3. **Stub drift.** Rename the stub's `name=` to `"get_device_fact"` (missing *s*) and run its test.
-   It hangs until pytest's or the workflow's timeout, because the workflow calls an activity no
-   worker has. Same symptom as Day 1's unregistered activity.
+   It fails fast with `NotFoundError: Activity function get_device_facts ... is not registered on
+   this worker`, after the retries (time-skipped, so instantly). The workflow calls an activity
+   the test worker doesn't have. Same cause as Day 1's unregistered activity.
 
 ## Check yourself
 

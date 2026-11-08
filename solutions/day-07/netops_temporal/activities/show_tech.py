@@ -23,8 +23,9 @@ def collect_show_tech(req: ShowTechRequest) -> ShowTechResult:
         with cli_session(req.device) as send:
             for number, command in enumerate(SHOW_TECH_COMMANDS[start:], start=start + 1):
                 (out_dir / f"{number:02d}.txt").write_text(send(command))
-                # "I'm alive, and I've finished `number` commands." Also where a
-                # cancellation request reaches this thread, as a CancelledError.
+                # "I'm alive, and I've finished `number` commands." The server's reply to a
+                # heartbeat is also how a cancel request arrives; the SDK then raises
+                # CancelledError in this thread, wherever it happens to be.
                 activity.heartbeat(number)
     except CancelledError:
         activity.logger.warning("%s show tech cancelled; partial output in %s", req.device, out_dir)

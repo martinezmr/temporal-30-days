@@ -22,8 +22,8 @@ workflows that are already running.
 When a workflow calls an activity, the arguments don't travel as Python objects. Temporal
 serializes them into **payloads** (JSON by default), stores them in the event history, and the
 worker running the activity deserializes them. The same happens to return values and workflow
-inputs and results. You saw this on Day 1: the result in the UI was `"Hello, Manny!"` with
-encoding `json/plain`.
+inputs and results. Look back at Day 1's `hello-manny` in the UI: click
+**WorkflowExecutionCompleted** and the result is `"Hello, Manny!"` with encoding `json/plain`.
 
 Two consequences:
 
@@ -119,8 +119,11 @@ The worker and every starter now call `connect()` instead of `Client.connect(...
     client = await connect()
 ```
 
-If you forget to switch a starter, it sends a Pydantic model with the default converter and you
-get a serialization error. Having one helper means there's only one place to get it right.
+If you forget to switch a starter, it may *seem* to work: Temporal's default converter has a
+fallback for Pydantic models and only prints warnings (`If you're using Pydantic v2, use
+temporalio.contrib.pydantic.pydantic_data_converter`). That fallback uses deprecated Pydantic APIs
+and doesn't handle every type the way the Pydantic converter does, so the worker and starters can
+quietly disagree about the data. One helper means there's only one place to get it right.
 
 ### 3. `devices/eapi.py`: translate pyeapi's errors
 
@@ -139,7 +142,8 @@ get a serialization error. Having one helper means there's only one place to get
 These are the real messages from the lab:
 `Unauthorized. Unable to authenticate user: Bad username/password combination` for a wrong
 password, and `Socket error during eAPI connection: [Errno 61] Connection refused` for a device
-that's down. `from err` keeps the original pyeapi exception attached, so the full story still
+you can't reach through a stopped tunnel (a stopped device on a routed lab gives a timeout
+message instead; both become `DeviceUnreachableError`). `from err` keeps the original pyeapi exception attached, so the full story still
 shows up in logs.
 
 ### 4. `activities/facts.py`: decide what's worth retrying

@@ -41,10 +41,12 @@ finished:
 | --- | --- | --- | --- |
 | `await workflow.execute_activity(get_device_facts, ...)` | ScheduleActivityTask `get_device_facts` | Event 5: ActivityTaskScheduled `get_device_facts` | Match. The activity is **not** re-run. |
 | (waiting on the `await`) | — | Event 7: ActivityTaskCompleted with the facts | The `await` returns the recorded facts |
-| `workflow.logger.info(...)` | — | — | Suppressed during replay, so no duplicate log line |
-| `return FactsReport(..., collected_at=workflow.now())` | CompleteWorkflowExecution | (end of history) | New: this is where the crash interrupted. The worker carries on live from here. |
+| `workflow.logger.info(...)` | — | (end of history) | Replay is over: the crash came before this line ever ran, so the worker now runs live from here and logs it, once |
+| `return FactsReport(..., collected_at=workflow.now())` | CompleteWorkflowExecution | — | New command, sent to the server as normal |
 
 That's why the device isn't asked for `show version` twice. The result was already in history.
+And if the crash had come *after* the log line, replaying that line would print nothing:
+`workflow.logger` stays quiet for code it has already run (more below).
 
 ### What breaks determinism
 

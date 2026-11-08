@@ -43,5 +43,6 @@ async def worker(workflow_env):
             workflows=WORKFLOWS,
             activities=ACTIVITIES,
             activity_executor=executor,
+            max_concurrent_activities=10,
         ) as running:
             yield running

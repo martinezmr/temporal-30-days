@@ -23,8 +23,8 @@ backed up, `nyc-rtr-01` unreachable". It doesn't crash, and it doesn't hide the 
 Workflow code is `async`, so `asyncio.gather` works in it, and it's deterministic: gathering
 coroutines that each `execute_activity` just **schedules** those activities. All the "schedule"
 commands go to the server in the same workflow task, and workers pick the activities up in
-parallel. The parallelism happens on the workers' thread pools (`max_workers=10` per worker), not
-in the workflow.
+parallel. The parallelism happens on the workers (10 activities at a time each: the thread pool
+and activity slots from Day 2), not in the workflow.
 
 ```
 ConfigBackupWorkflow
@@ -263,6 +263,9 @@ together. In the history, all eight **ActivityTaskScheduled** events come right 
      FAIL  nyc-rtr-01  target 4.32.0F  DeviceUnreachableError: nyc-rtr-01: Socket error during eAPI connection: [Errno 61] Connection refused
    ```
 
+   (That's the message through a tunnel. On a routed lab, a stopped device times out instead,
+   and the run takes longer.)
+
    The intent lookup for `nyc-rtr-01` still succeeded, so the target is shown. In the history,
    that device's backup activity shows 3 attempts.
 2. **Wrong password.** `DEVICE_PASSWORD=wrong` in `.env`, restart the worker, back up one device:
@@ -273,10 +276,13 @@ together. In the history, all eight **ActivityTaskScheduled** events come right 
 3. **Nautobot down.** `podman compose -f lab/nautobot/compose.yml stop nautobot`. Every
    device's intent lookup retries 3 times and fails, so every device is reported failed, but the
    backup files are still written. Start Nautobot again.
-4. **Starve the thread pool.** Set `max_workers=2` in the worker, restart it, and run the backup
-   again. In the **Timeline** view the eight activities now start two at a time instead of all
-   together. The rest wait in the task queue. The pool size is a real limit on how many devices
-   one worker talks to at once. Put it back to 10.
+4. **Starve the worker.** Set both `max_workers=2` and `max_concurrent_activities=2` in the
+   worker, restart it, and run the backup again. In the **Timeline** view the eight activities now
+   start two at a time instead of all together; the rest wait in the task queue. Now try
+   `max_workers=2` with `max_concurrent_activities` back at 10: all eight bars start together
+   again, because the worker *accepted* all eight, but only two run at a time and the rest wait
+   inside the worker with their timeouts running. That's why the two numbers must match. Put both
+   back to 10.
 
 ## Check yourself (end-of-week checkpoint)
 

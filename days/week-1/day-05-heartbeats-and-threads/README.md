@@ -24,7 +24,8 @@ Netmiko logs in over SSH like a person would: it sends a command and reads the s
 prompt comes back. It's the library you reach for when there's no API, and it is slow and
 **blocking**. Like Day 2's pyeapi activity, it goes in a plain `def` activity on the worker's
 thread pool. One Netmiko session ties up one thread for its whole duration, so the pool size
-(`max_workers=10`) is also "at most 10 SSH sessions from this worker".
+(`max_workers=10`, matched by `max_concurrent_activities=10`) is also "at most 10 SSH sessions
+from this worker".
 
 ### Heartbeats: "I'm alive, and here's how far I got"
 
@@ -157,8 +158,9 @@ def collect_show_tech(req: ShowTechRequest) -> ShowTechResult:
         with cli_session(req.device) as send:
             for number, command in enumerate(SHOW_TECH_COMMANDS[start:], start=start + 1):
                 (out_dir / f"{number:02d}.txt").write_text(send(command))
-                # "I'm alive, and I've finished `number` commands." Also where a
-                # cancellation request reaches this thread, as a CancelledError.
+                # "I'm alive, and I've finished `number` commands." The server's reply to a
+                # heartbeat is also how a cancel request arrives; the SDK then raises
+                # CancelledError in this thread, wherever it happens to be.
                 activity.heartbeat(number)
     except CancelledError:
         activity.logger.warning("%s show tech cancelled; partial output in %s", req.device, out_dir)
@@ -241,8 +243,10 @@ LAB_MODE=mock MOCK_CLI_DELAY=3 uv run --env-file .env python -m netops_temporal.
 1. **Kill the worker mid-collection.** With the slow worker running, start show tech for
    `nyc-rtr-01`. After ~13 s (about 4 commands), kill the worker hard (`kill -9`, or close the
    terminal). Watch the UI:
-   - The pending activity stays **Running** for ~15 s, then the attempt fails with
-     **Heartbeat timeout**, and attempt 2 is scheduled.
+   - The pending activity stays **Running** for a few more seconds, then the attempt fails with
+     **Heartbeat timeout**, and attempt 2 is scheduled. Why not a full 15 s? The clock started at
+     the last heartbeat the server *received* (about 3 s in, thanks to throttling), not at the
+     kill.
    - Start the worker again. Its log says `Resuming nyc-rtr-01 show tech at command 2` (or
      similar), and the final result shows `resumed_from=1`. Not command 1, but not command 5
      either. That's throttling: only the first heartbeat had reached the server. Re-read the
@@ -261,9 +265,10 @@ LAB_MODE=mock MOCK_CLI_DELAY=3 uv run --env-file .env python -m netops_temporal.
    `MOCK_CLI_DELAY=3`. Every attempt times out on its first command, because one step takes longer
    than the heartbeat timeout. After 3 attempts the workflow fails. Put it back to 15 s.
 4. **Cancel, then kill.** Cancel a slow run and immediately kill the worker. The cancel never
-   reaches the activity, the attempt dies by heartbeat timeout, and since cancellation was
-   requested, Temporal doesn't retry it: the workflow ends **Failed** with
-   "activity Heartbeat timeout". Cancellation is a request, not a guarantee.
+   reaches the activity, and the attempt dies by heartbeat timeout. Because the workflow is
+   waiting for the cancellation to complete, it stays open until you **restart the worker**; then,
+   since cancellation was requested, Temporal doesn't retry the activity, and the workflow ends
+   **Failed** with "activity Heartbeat timeout". Cancellation is a request, not a guarantee.
 
 ## Check yourself
 

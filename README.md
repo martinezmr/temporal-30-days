@@ -57,7 +57,9 @@ credentials, slow CLI). Temporal itself is always real.
 3. Write the code yourself in `src/netops_temporal/`. If you get stuck, compare with that day's
    solution.
 4. Write one line a day in [`LEARNING.md`](LEARNING.md): what surprised you.
-5. Commit at the end of each day (`git commit -am "day 02: first activity"`).
+5. Work on your own branch (`git switch -c my-progress`) and commit at the end of each day
+   (`git commit -am "day 02: first activity"`). Keep `main` as published: CI there checks that
+   `src/` still matches the Day 1 starting point.
 
 Budget 60–90 minutes a day.
 
