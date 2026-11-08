@@ -1,0 +1,10 @@
+top - 23:19:44 up 10 min,  0 users,  load average: 1.21, 1.30, 0.94
+Tasks: 112 total,   1 running, 111 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  6.2 us,  3.1 sy,  0.0 ni, 90.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem :  16040.0 total,   2657.6 free,   5120.3 used,   8262.1 buff/cache
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+   1241 root      20   0  612340 198220  92112 S   6.7   1.2   0:41.20 Sysdb
+   1302 root      20   0  498112 142876  80552 S   3.3   0.9   0:18.77 ConfigAgent
+   1655 root      20   0  402228  98504  61208 S   0.0   0.6   0:07.12 Ospf
+   1688 root      20   0  389016  91232  58944 S   0.0   0.6   0:05.49 Lldp

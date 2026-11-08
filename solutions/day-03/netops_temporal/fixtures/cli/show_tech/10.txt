@@ -1,0 +1,10 @@
+System information
+  Model                    Description
+  ------------------------ ----------------------------------------------------
+  cEOSLab                  cEOSLab
+
+System has 3 switched transceiver interfaces
+  Port       Manufacturer     Model            Serial Number    Rev
+  ---------- ---------------- ---------------- ---------------- ----
+  1          Arista Networks  EbraTestPhyPort
+  2          Arista Networks  EbraTestPhyPort

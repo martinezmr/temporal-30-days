@@ -1,0 +1,10 @@
+Syslog logging: enabled
+    Buffer logging: level debugging
+    Console logging: level errors
+    Persistent logging: disabled
+
+Nov  7 23:09:12 bos-rtr-01 Ebra: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet1 (Connection to bos-acc-01), changed state to up
+Nov  7 23:09:12 bos-rtr-01 Ebra: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet2 (Connection to nyc-acc-01), changed state to up
+Nov  7 23:09:31 bos-rtr-01 Ospf: %OSPF-4-OSPF_ADJACENCY_ESTABLISHED: NGB 10.0.0.1, interface 10.10.10.2 adjacency established
+Nov  7 23:09:33 bos-rtr-01 Ospf: %OSPF-4-OSPF_ADJACENCY_ESTABLISHED: NGB 10.0.0.3, interface 10.10.10.5 adjacency established
+Nov  7 23:10:02 bos-rtr-01 ConfigAgent: %SYS-5-CONFIG_I: Configured from console by admin on con0 (0.0.0.0)
