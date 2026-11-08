@@ -5,7 +5,7 @@ description = "30 days of Temporal (Python) for network automation"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "temporalio[opentelemetry]>=1.34",
+    "temporalio[opentelemetry,openai-agents]>=1.34",
     "pydantic>=2.9",
     "pyeapi>=1.0.4",
     "netmiko>=4.8",
