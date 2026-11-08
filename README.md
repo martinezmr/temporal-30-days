@@ -1,70 +1,136 @@
-# 30 Days of Temporal (Python) — Network Automation Track
+# 30 Days of Temporal for Network Automation Engineers
 
-A self-paced, 30-day path from "I've run a few workflows" to a production-shaped
-**`NetworkComplianceOrchestrator`**: a long-running entity workflow that compares
-intent (Nautobot) with state (4 Arista cEOS nodes) and launches
-`ConfigComplianceWorkflow` or `DeviceUpgradeWorkflow` when they drift — with Nexus
-across team boundaries, AI where it helps, and workers ready for OpenShift + CI/CD.
+A self-paced course that teaches [Temporal](https://temporal.io) (Python SDK) to network
+automation engineers who already write Python but are new to Temporal. You build real
+workflows against a local lab of Arista cEOS devices and Nautobot. By Day 30 you'll have used
+every major Temporal feature and know when each one is the right tool for a network job.
 
-Each day builds on the code from the day before, in this one repo.
+## Who this is for
 
-## How to use it
+- You write Python scripts comfortably (functions, classes, `requests`/Netmiko-style automation).
+- You know EOS, `show` commands, config changes, and what a source of truth is for.
+- You're new to Temporal: workflows, activities, workers, replay, signals, and so on. That's
+  what the course explains, from the ground up.
 
-1. Do the [lab setup](docs/lab-setup.md) once (about 30 minutes).
-2. Each day, open that day's `README.md` and work through **Learn → Build → Break it → Done when**.
-3. Write one line per day in [`LEARNING.md`](LEARNING.md): what surprised you.
-4. Commit at the end of each day (`git commit -m "day 07: parallel backup"`), so you can diff your progress.
+No async primer, no Python basics. Every Temporal idea is explained in plain words with a
+network analogy before you write code for it.
 
-Budget 60–90 minutes a day. Weeks 1–2 move fast if you already know the basics.
+## What you'll build
 
-## Where to run it
+Over the month you grow one codebase in `src/netops_temporal/` into a
+**`NetworkComplianceOrchestrator`**: a long-running workflow that compares intent (Nautobot)
+with state (4 cEOS nodes) and launches compliance or upgrade workflows when they drift. Along
+the way you'll use three device libraries, each where it fits best:
 
-| Environment | Good for | Not good for |
+| Library | First used | Why there |
 | --- | --- | --- |
-| **Your Mac** (Podman/OrbStack + containerlab + Nautobot) | Everything. This is the primary lab. | — |
-| **GitHub Codespaces** ([details](docs/codespaces.md)) | Any day marked ☁️ below: Temporal server, UI, mocked device activities, Nexus, AI | Talking to your cEOS lab or Nautobot on your Mac |
+| **pyeapi** | Day 2 | Structured JSON from eAPI, so you can focus on Temporal itself |
+| **Netmiko** | Day 5 | Slow, blocking SSH sessions: perfect for learning heartbeats and cancellation |
+| **NAPALM** | Day 7 | Normalized backups, then candidate/commit/rollback for the Day 17 safe-change saga |
+| **pynautobot** | Day 7 | Reads intent from Nautobot |
+
+## The lab (all local)
+
+| Piece | How |
+| --- | --- |
+| Temporal dev server + UI | `./lab/start-temporal.sh` → http://localhost:8233 |
+| 4 × Arista cEOS (containerlab) | `lab/ceos-clab.clab.yml`, static IPs, eAPI + SSH as `admin`/`admin` |
+| Nautobot | `lab/nautobot/start.sh` + `lab/nautobot/seed.py` → http://localhost:8080 |
+
+Set it up once with [docs/lab-setup.md](docs/lab-setup.md) (30–45 minutes). Behind a jump host?
+`lab/tunnels.sh` handles it.
+
+**No lab handy?** Every day also runs in **mock mode** (`LAB_MODE=mock`): device and Nautobot
+calls replay outputs recorded from the real lab, and you can fake failures (a device down, bad
+credentials, slow CLI). Temporal itself is always real.
+
+## How this course works
+
+1. Do the [lab setup](docs/lab-setup.md) once.
+2. Each day, open that day's `README.md`. Every lesson has the same sections:
+   - **Why today matters**: the network problem.
+   - **Concept**: the Temporal idea, explained before any code.
+   - **Walkthrough**: the code, built step by step, every new line explained.
+   - **Run it**: exact commands and the output you should see.
+   - **Break it**: deliberate failures to watch Temporal handle.
+   - **Check yourself**: questions, with answers you can expand.
+3. Write the code yourself in `src/netops_temporal/`. If you get stuck, compare with that day's
+   solution.
+4. Write one line a day in [`LEARNING.md`](LEARNING.md): what surprised you.
+5. Work on your own branch (`git switch -c my-progress`) and commit at the end of each day
+   (`git commit -am "day 02: first activity"`). Keep `main` as published: CI there checks that
+   `src/` still matches the Day 1 starting point.
+
+Budget 60–90 minutes a day.
+
+## Using the solutions
+
+`solutions/day-NN/` holds the **complete working code as it should look at the end of Day NN**,
+with tests. Day 1's solution is exactly the `src/` you start with. Each later solution is the
+previous one plus that day's work.
+
+```bash
+# What's different between my code and the Day 2 solution?
+diff -r -x __pycache__ src/netops_temporal solutions/day-02/netops_temporal
+
+# Run the Day 2 solution instead of my code (worker, starter, anything):
+scripts/solution.sh 02 python -m netops_temporal.workers.main
+scripts/solution.sh 02 python -m netops_temporal.starters.facts bos-rtr-01
+
+# Run a solution's tests (mock mode, no lab needed):
+scripts/test-solutions.sh 02
+
+# Fell behind? Start the next day from a known-good copy:
+rm -rf src/netops_temporal && cp -r solutions/day-02/netops_temporal src/
+```
+
+`scripts/solution.sh` puts the solution folder first on `PYTHONPATH`, so
+`import netops_temporal` loads the solution, not your `src/`. It loads `.env` if you have one.
 
 ## The 30 days
 
-| Day | Topic | Key features | ☁️ Codespaces? |
+Days 1–7 are fully written. Days 8–30 are still outlines, and are being rewritten in the
+same format.
+
+| Day | Topic | Key features | Needs the lab? |
 | --- | --- | --- | --- |
 | **Week 1 — Foundations, against real devices** | | | |
-| [01](days/week-1/day-01-lab-up/README.md) | Lab up, repo tour | dev server, CLI, worker, task queues | ☁️ |
-| [02](days/week-1/day-02-eapi-activity/README.md) | First real activity | activity timeouts, retry policy | local (or mock) |
-| [03](days/week-1/day-03-models-and-failures/README.md) | Data models and failures | Pydantic converter, non-retryable errors | ☁️ with mock |
-| [04](days/week-1/day-04-determinism/README.md) | Determinism | sandbox, replay, `workflow.now()` | ☁️ |
-| [05](days/week-1/day-05-heartbeats-and-threads/README.md) | Blocking libs and heartbeats | thread-pool activities, heartbeats, cancellation | ☁️ with mock |
-| [06](days/week-1/day-06-testing/README.md) | Testing | time-skipping env, mocks, Replayer | ☁️ |
-| [07](days/week-1/day-07-parallel-backup/README.md) | Mini-project: parallel backup | `asyncio.gather`, partial failure | local |
+| [01](days/week-1/day-01-lab-up/README.md) | Lab up, how Temporal runs your code | server, worker, task queues, event history | No |
+| [02](days/week-1/day-02-eapi-activity/README.md) | First real activity with pyeapi | sync activities, timeouts, retry policy | Optional (mock works) |
+| [03](days/week-1/day-03-models-and-failures/README.md) | Data models and failures | Pydantic converter, non-retryable errors | Optional |
+| [04](days/week-1/day-04-determinism/README.md) | Determinism and replay | sandbox, replay, `workflow.now()` | No |
+| [05](days/week-1/day-05-heartbeats-and-threads/README.md) | Netmiko, heartbeats, cancellation | thread-pool activities, heartbeats, cancellation | Optional |
+| [06](days/week-1/day-06-testing/README.md) | Testing | time-skipping env, stubbed activities, Replayer | No |
+| [07](days/week-1/day-07-parallel-backup/README.md) | Mini-project: parallel backup (NAPALM) + intent (Nautobot) | `asyncio.gather`, partial failure | Optional |
 | **Week 2 — Message passing and long-running workflows** | | | |
-| [08](days/week-2/day-08-signals/README.md) | Signals | signal handlers, `wait_condition` | ☁️ |
-| [09](days/week-2/day-09-queries/README.md) | Queries | query handlers | ☁️ |
-| [10](days/week-2/day-10-updates/README.md) | Updates | validators, update-with-start, signal-with-start | ☁️ |
-| [11](days/week-2/day-11-timers/README.md) | Timers and maintenance windows | durable timers, timeouts, time skipping | ☁️ |
-| [12](days/week-2/day-12-continue-as-new/README.md) | Continue-As-New | history limits, `all_handlers_finished` | ☁️ |
-| [13](days/week-2/day-13-entity-workflows/README.md) | Entity workflows | one workflow per device, request queue | ☁️ |
-| [14](days/week-2/day-14-orchestrator-v0/README.md) | Mini-project: Orchestrator v0 | everything from Week 2 | local |
+| [08](days/week-2/day-08-signals/README.md) | Signals | signal handlers, `wait_condition` | |
+| [09](days/week-2/day-09-queries/README.md) | Queries | query handlers | |
+| [10](days/week-2/day-10-updates/README.md) | Updates | validators, update-with-start, signal-with-start | |
+| [11](days/week-2/day-11-timers/README.md) | Timers and maintenance windows | durable timers, timeouts, time skipping | |
+| [12](days/week-2/day-12-continue-as-new/README.md) | Continue-As-New | history limits, `all_handlers_finished` | |
+| [13](days/week-2/day-13-entity-workflows/README.md) | Entity workflows | one workflow per device, request queue | |
+| [14](days/week-2/day-14-orchestrator-v0/README.md) | Mini-project: Orchestrator v0 | everything from Week 2 | |
 | **Week 3 — Composition and production hardening** | | | |
-| [15](days/week-3/day-15-child-workflows/README.md) | Child workflows | parent close policy | ☁️ |
-| [16](days/week-3/day-16-fan-out/README.md) | Fan-out without duplicates | ID conflict policy, concurrency caps | ☁️ |
-| [17](days/week-3/day-17-saga-rollback/README.md) | Saga: safe config push | compensation, Arista config sessions | local |
-| [18](days/week-3/day-18-schedules/README.md) | Schedules | overlap policy, backfill | ☁️ |
-| [19](days/week-3/day-19-versioning/README.md) | Versioning (the CI/CD day) | patching, Worker Versioning | ☁️ |
-| [20](days/week-3/day-20-observability/README.md) | Observability | search attributes, metadata, metrics, tracing | ☁️ |
-| [21](days/week-3/day-21-production-workers/README.md) | Production-shaped workers | routing, rate limits, codecs, containers | local |
+| [15](days/week-3/day-15-child-workflows/README.md) | Child workflows | parent close policy | |
+| [16](days/week-3/day-16-fan-out/README.md) | Fan-out without duplicates | ID conflict policy, concurrency caps | |
+| [17](days/week-3/day-17-saga-rollback/README.md) | Saga: safe config push (NAPALM) | compensation, candidate/commit/rollback | |
+| [18](days/week-3/day-18-schedules/README.md) | Schedules | overlap policy, backfill | |
+| [19](days/week-3/day-19-versioning/README.md) | Versioning | patching, Worker Versioning | |
+| [20](days/week-3/day-20-observability/README.md) | Observability | search attributes, metadata, metrics, tracing | |
+| [21](days/week-3/day-21-production-workers/README.md) | Production-shaped workers, locally | task-queue routing, rate limits, graceful shutdown, codecs | |
 | **Week 4 — Nexus and AI** | | | |
-| [22](days/week-4/day-22-nexus-sync/README.md) | First Nexus service | endpoints, sync operations | ☁️ |
-| [23](days/week-4/day-23-nexus-async/README.md) | Async Nexus operations | workflow-backed operations, cancellation | ☁️ |
-| [24](days/week-4/day-24-nexus-contracts/README.md) | Nexus errors and contracts | timeouts, errors, shared contract package | ☁️ |
-| [25](days/week-4/day-25-llm-activity/README.md) | AI 1: LLM call as activity | structured output, retries | ☁️ |
-| [26](days/week-4/day-26-durable-agent/README.md) | AI 2: durable agent | OpenAI Agents plugin, `activity_as_tool` | ☁️ with mock |
-| [27](days/week-4/day-27-human-in-the-loop/README.md) | AI 3: human in the loop | approval updates, deadlines | ☁️ with mock |
-| [28](days/week-4/day-28-mcp-guardrails/README.md) | AI 4: MCP and guardrails | MCP servers, allowlists, cost caps | ☁️ with mock |
+| [22](days/week-4/day-22-nexus-sync/README.md) | First Nexus service | endpoints, sync operations | |
+| [23](days/week-4/day-23-nexus-async/README.md) | Async Nexus operations | workflow-backed operations, cancellation | |
+| [24](days/week-4/day-24-nexus-contracts/README.md) | Nexus errors and contracts | timeouts, errors, shared contract package | |
+| [25](days/week-4/day-25-llm-activity/README.md) | AI 1: LLM call as an activity (GitHub Copilot models) | structured output, retries | |
+| [26](days/week-4/day-26-durable-agent/README.md) | AI 2: durable agent | agents as workflows, tools as activities | |
+| [27](days/week-4/day-27-human-in-the-loop/README.md) | AI 3: human in the loop | approval updates, deadlines | |
+| [28](days/week-4/day-28-mcp-guardrails/README.md) | AI 4: MCP and guardrails | MCP servers, allowlists, cost caps | |
 | **Capstone** | | | |
-| [29](days/capstone/day-29-assemble-orchestrator/README.md) | Assemble the orchestrator | all of it | local |
-| [30](days/capstone/day-30-ocp-cicd/README.md) | Containers, CI/CD, OpenShift | Worker Versioning in a pipeline | local + CI |
+| [29](days/capstone/day-29-assemble-orchestrator/README.md) | Assemble the orchestrator | all of it | |
+| [30](days/capstone/day-30-worker-versioning/README.md) | Worker Versioning locally + CI | v1 and v2 workers side by side, replay tests in CI | |
 
-## Architecture you are building toward
+## Architecture you're building toward
 
 ```
               Operators · nightly schedule · AI approvals
@@ -75,26 +141,30 @@ Budget 60–90 minutes a day. Weeks 1–2 move fast if you already know the basi
 │    └─ Troubleshooting agent (child)         │     │        (saga + rollback)       │
 └──────┬───────────────┬──────────────┬───────┘     └──────────────┬────────────────┘
        │ intent        │ model calls  │ state                      │ config changes
-   Nautobot         LLM API         4 × Arista cEOS ◀──────────────┘
+   Nautobot     GitHub Copilot   4 × Arista cEOS ◀─────────────────┘
+                   models
 ```
 
 ## Repo layout
 
 ```
-days/                 # one folder per day, each with a README
+days/                 # one folder per day, each with a README (the lesson)
+solutions/day-NN/     # complete code + tests as of the end of each day
+src/netops_temporal/  # YOUR code, grown all month (starts equal to solutions/day-01)
+  activities/  workflows/  workers/  starters/   # Temporal code
+  devices/  mock/  fixtures/  tools/             # lab helpers, mock mode, check_lab
+tests/                # tests for your code
+lab/                  # Temporal, containerlab topology, Nautobot, jump-host tunnels
+scripts/              # solution.sh, test-solutions.sh, check_lessons.py
 docs/                 # lab setup, Codespaces, feature checklist
-lab/                  # containerlab topology, Temporal container script
-src/netops_temporal/  # the code you grow all month
-  activities/  workflows/  workers/  starters/  nexus/
-tests/                # pytest + replay histories (tests/histories/)
-.devcontainer/        # GitHub Codespaces: Temporal dev server + Python
-.github/workflows/    # CI (grows into the Day 30 pipeline)
 ```
 
-## Versions assumed
+## Versions
 
-- Temporal Python SDK `temporalio` 1.34 (released 30 Sep 2026)
-- Python 3.13 (3.14 works for Weeks 1–3; some AI libraries may lag)
-- Temporal CLI dev server with `--db-filename` for persistence
+- Python 3.13, managed with [`uv`](https://docs.astral.sh/uv/)
+- Temporal Python SDK `temporalio` ≥ 1.34 (tested with 1.35)
+- Temporal CLI dev server (with `--db-filename` for persistence)
+- Arista cEOS 4.32.0F, Nautobot 3.2.8
 
-See [docs/feature-checklist.md](docs/feature-checklist.md) for everything covered and what to explore after Day 30.
+See [docs/feature-checklist.md](docs/feature-checklist.md) for everything covered and what to
+explore after Day 30.

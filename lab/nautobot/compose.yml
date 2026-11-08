@@ -1,0 +1,54 @@
+# Nautobot for the course: the "intent" side (source of truth).
+# Start with lab/nautobot/start.sh, then seed it with lab/nautobot/seed.py.
+# Dev-only credentials: UI admin/admin, API token below (matches .env.example).
+name: t30-nautobot
+
+x-nautobot-env: &nautobot-env
+  NAUTOBOT_ALLOWED_HOSTS: "*"
+  NAUTOBOT_SECRET_KEY: "dev-only-not-secret-change-me-0123456789abcdefghijklmnopqrstuvwxyz"
+  NAUTOBOT_DB_HOST: db
+  NAUTOBOT_DB_NAME: nautobot
+  NAUTOBOT_DB_USER: nautobot
+  NAUTOBOT_DB_PASSWORD: nautobot
+  NAUTOBOT_REDIS_HOST: redis
+  NAUTOBOT_CREATE_SUPERUSER: "true"
+  NAUTOBOT_SUPERUSER_NAME: admin
+  NAUTOBOT_SUPERUSER_EMAIL: admin@example.com
+  NAUTOBOT_SUPERUSER_PASSWORD: admin
+  NAUTOBOT_SUPERUSER_API_TOKEN: "0123456789abcdef0123456789abcdef01234567"
+
+services:
+  db:
+    image: docker.io/library/postgres:16-alpine
+    environment:
+      POSTGRES_DB: nautobot
+      POSTGRES_USER: nautobot
+      POSTGRES_PASSWORD: nautobot
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nautobot"]
+      interval: 5s
+      retries: 20
+
+  redis:
+    image: docker.io/library/redis:7-alpine
+
+  nautobot:
+    image: docker.io/networktocode/nautobot:3.2.8-py3.13
+    environment: *nautobot-env
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:8080/health/ || exit 1"]
+      interval: 10s
+      start_period: 120s
+      retries: 30
+
+volumes:
+  db-data:
