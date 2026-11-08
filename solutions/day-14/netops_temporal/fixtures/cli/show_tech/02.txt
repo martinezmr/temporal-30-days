@@ -1,0 +1,5 @@
+Port       Name                     Status       Vlan     Duplex Speed  Type            Flags Encapsulation
+Et1        Connection to bos-acc-01 connected    routed   full   1G     EbraTestPhyPort                   
+Et2        Connection to nyc-acc-01 connected    routed   full   1G     EbraTestPhyPort                   
+Ma0                                 connected    routed   a-full a-1G   10/100/1000                       
+
