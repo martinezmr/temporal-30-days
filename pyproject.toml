@@ -39,3 +39,6 @@ line-length = 100
 [tool.ruff.lint]
 # A small, stable rule set: real bugs and import order, not style debates in teaching code.
 select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["netops_temporal"]
