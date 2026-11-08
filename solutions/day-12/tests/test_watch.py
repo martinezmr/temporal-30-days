@@ -240,7 +240,7 @@ async def latest_status(env, workflow_id: str) -> WatchStatus:
 async def test_continue_as_new_carries_state(workflow_env, worker):
     handle = await start_short_runs(workflow_env, worker)
     first_run = handle.result_run_id
-    # The handle start_workflow returns is tied to the first run. Follow the chain instead.
+    # A handle without a run ID means "the latest run", so it follows the chain.
     latest = workflow_env.client.get_workflow_handle(handle.id)
     status = await wait_for_status(workflow_env, latest, lambda s: s.checks >= 3, step=10)
     assert status.checks >= 3  # counted across runs, not reset

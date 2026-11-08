@@ -55,10 +55,11 @@ server makes the run handle them first, and the state they change gets handed ov
 
 ### Handles and runs
 
-A workflow ID now has several runs. A handle made with
-`client.get_workflow_handle("watch-bos-rtr-01")` (no run ID) always means the **latest** run, so
-signals, queries and updates follow the chain. The handle `start_workflow` returns is tied to the
-run it started. Query that one after a roll-over and you get the old run's final state.
+A workflow ID now has several runs. A handle without a run ID, from
+`client.get_workflow_handle("watch-bos-rtr-01")` or the one `start_workflow` returns, always
+means the **latest** run, so signals, queries and updates follow the chain. To reach one
+particular run, pass its run ID (`get_workflow_handle(id, run_id=...)`, or `--run-id` in the CLI):
+you get that run's final state, frozen.
 
 ## Walkthrough
 
@@ -186,8 +187,7 @@ continue-as-new.
 2. What carries over to the new run, and what doesn't?
 3. Why is the continue-as-new check placed after the interval wait?
 4. Why wait for `all_handlers_finished` first?
-5. An operator has a handle from when they started the watch. After a roll-over, they query it.
-   What do they see?
+5. After a roll-over, how do you see the state an *old* run ended with?
 
 <details>
 <summary>Answers</summary>
@@ -199,8 +199,8 @@ continue-as-new.
 3. So the new run's first check happens one interval after the last one, not immediately.
 4. So a signal or update handler that's partway through finishes before the run ends, instead
    of being cut off.
-5. The old run's final state, because that handle is tied to the run it started. A handle
-   without a run ID follows the chain to the latest run.
+5. Query it with its run ID: `--run-id` in the CLI, or `get_workflow_handle(id, run_id=...)`.
+   A handle without a run ID always goes to the latest run.
 
 </details>
 
