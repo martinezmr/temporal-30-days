@@ -1,4 +1,4 @@
-# Grows into the Day 30 pipeline: lint -> tests -> replay -> build -> deploy.
+# Lint, test the learner workspace, test every day's solution, and check lessons match solutions.
 name: ci
 on:
   push:
@@ -8,9 +8,18 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      LAB_MODE: mock
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync
-      - run: uv run ruff check src tests
+      - run: uv run ruff check src tests solutions scripts lab
       - run: uv run pytest -q
+      - run: uv run pytest -q lab/nautobot
+      - run: scripts/test-solutions.sh
+      - run: uv run python scripts/check_lessons.py
+      - name: src/ starts identical to the Day 1 solution
+        run: |
+          diff -r -x __pycache__ src/netops_temporal solutions/day-01/netops_temporal
+          diff -r -x __pycache__ -x test_check_lessons.py -x test_solution_runner.py tests solutions/day-01/tests
