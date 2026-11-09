@@ -29,7 +29,7 @@ unless the entry says otherwise.
 
 Final run on this branch: ruff clean, root tests 33 passed, lab tests 2 passed,
 `scripts/test-solutions.sh` passed on all 30 days, `check_lessons.py` OK on 34 lessons, and `src/`
-identical to Day 1.
+identical to Day 1. GitHub Actions passed the same steps on PR #2, and saved the Temporal server cache.
 
 Checking live runs and their logs found real bugs that the tests had missed. All of these are fixed:
 
@@ -46,8 +46,6 @@ Checking live runs and their logs found real bugs that the tests had missed. All
 
 ## Not verified live
 
-- **GitHub Actions**, including the new cache of the Temporal server downloads. The steps pass
-  locally, but the cache paths assume the runner's temp directory is `/tmp`.
 - **Codespaces.** `.devcontainer/start-temporal.sh` now registers the search attributes, with the
   same flags as `lab/start-temporal.sh`, but it hasn't run in a Codespace.
 - **Day 30 in `temporal-dev`, or as containers.** It ran on a CLI dev server with worker processes,
