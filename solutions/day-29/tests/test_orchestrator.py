@@ -38,8 +38,10 @@ async def wait_for_cycles(handle, n: int):
     pytest.fail(f"orchestrator never finished {n} cycle(s)")
 
 
-async def test_orchestrator_first_cycle_reports_expected_drift(workflow_env, worker):
-    handle = await start(workflow_env, worker)
+async def test_orchestrator_first_cycle_reports_expected_drift(dev_env, dev_worker):
+    # A real dev server: the time-skipping one can leave a remediate operation STARTED after its
+    # workflow has completed, and then this cycle never ends (about 1 run in 10).
+    handle = await start(dev_env, dev_worker)
     state = await wait_for_cycles(handle, 1)
     assert set(state) == {"bos-rtr-01", "bos-acc-01", "nyc-rtr-01", "nyc-acc-01"}
     assert all(s.status == "drifted" for s in state.values())
