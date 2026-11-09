@@ -1,0 +1,96 @@
+"""Shared test setup: mock lab on, a time-skipping Temporal server, and a worker for it."""
+
+import shutil
+from concurrent.futures import ThreadPoolExecutor
+from contextlib import asynccontextmanager
+
+import pytest
+from temporalio.api.enums.v1 import IndexedValueType
+from temporalio.api.operatorservice.v1 import AddSearchAttributesRequest
+from temporalio.contrib.pydantic import pydantic_data_converter
+from temporalio.testing import WorkflowEnvironment
+from temporalio.worker import Worker
+
+from netops_temporal.activities import backup, show_tech
+from netops_temporal.constants import DEVICE_IO_TASK_QUEUE
+from netops_temporal.observability import COMPLIANCE_SA, DEVICE_SA
+from netops_temporal.workers.main import ACTIVITIES, WORKFLOWS
+
+TASK_QUEUE = "test"
+
+
+@pytest.fixture(autouse=True)
+def mock_lab(monkeypatch, tmp_path):
+    """Every test runs against the mock lab, with outputs in a throwaway directory."""
+    monkeypatch.setenv("LAB_MODE", "mock")
+    # Day 14: the mock lab keeps pushed config in OUTPUT_DIR/mock-state.json.
+    monkeypatch.setenv("OUTPUT_DIR", str(tmp_path))
+    for name in ("MOCK_UNREACHABLE", "MOCK_AUTH_FAIL", "MOCK_CLI_DELAY", "MOCK_VERIFY_FAIL"):
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setattr(show_tech, "OUTPUT_DIR", tmp_path)
+    monkeypatch.setattr(backup, "OUTPUT_DIR", tmp_path)
+    return tmp_path
+
+
+@pytest.fixture
+async def workflow_env():
+    """A local Temporal test server that skips ahead whenever workflows are only waiting."""
+    async with await WorkflowEnvironment.start_time_skipping(
+        data_converter=pydantic_data_converter
+    ) as env:
+        # Day 20: the workflows set search attributes, and a server rejects unknown ones.
+        await env.client.operator_service.add_search_attributes(
+            AddSearchAttributesRequest(
+                namespace=env.client.namespace,
+                search_attributes={
+                    key.name: IndexedValueType.INDEXED_VALUE_TYPE_KEYWORD
+                    for key in (DEVICE_SA, COMPLIANCE_SA)
+                },
+            )
+        )
+        yield env
+
+
+@asynccontextmanager
+async def workers(client):
+    """Like workers/main.py: workflows on TASK_QUEUE, and (Day 21) activities on the device-io
+    queue, where every workflow sends them. Yields the workflow worker."""
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        async with (
+            Worker(client, task_queue=TASK_QUEUE, workflows=WORKFLOWS) as running,
+            Worker(
+                client,
+                task_queue=DEVICE_IO_TASK_QUEUE,
+                activities=ACTIVITIES,
+                activity_executor=executor,
+                max_concurrent_activities=10,
+            ),
+        ):
+            yield running
+
+
+@pytest.fixture
+async def worker(workflow_env):
+    """Workers with the same workflows and activities as the real one."""
+    async with workers(workflow_env.client) as running:
+        yield running
+
+
+@pytest.fixture
+async def dev_env():
+    """A real Temporal dev server, for the few features the time-skipping server doesn't
+    implement faithfully (Day 15: parent close policies). Uses the `temporal` CLI if it's
+    installed, otherwise downloads the dev server once."""
+    async with await WorkflowEnvironment.start_local(
+        data_converter=pydantic_data_converter,
+        dev_server_existing_path=shutil.which("temporal"),
+        # Day 20: the same search attributes lab/start-temporal.sh registers.
+        search_attributes=[DEVICE_SA, COMPLIANCE_SA],
+    ) as env:
+        yield env
+
+
+@pytest.fixture
+async def dev_worker(dev_env):
+    async with workers(dev_env.client) as running:
+        yield running

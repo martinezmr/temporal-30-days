@@ -1,0 +1,26 @@
+{
+  "bos-rtr-01": {
+    "device": "bos-rtr-01",
+    "role": "router",
+    "location": "BOS",
+    "target_version": "4.32.0F"
+  },
+  "bos-acc-01": {
+    "device": "bos-acc-01",
+    "role": "access",
+    "location": "BOS",
+    "target_version": "4.32.0F"
+  },
+  "nyc-rtr-01": {
+    "device": "nyc-rtr-01",
+    "role": "router",
+    "location": "NYC",
+    "target_version": "4.32.0F"
+  },
+  "nyc-acc-01": {
+    "device": "nyc-acc-01",
+    "role": "access",
+    "location": "NYC",
+    "target_version": "4.33.1F"
+  }
+}

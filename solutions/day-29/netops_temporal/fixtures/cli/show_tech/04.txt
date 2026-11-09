@@ -1,0 +1,33 @@
+
+VRF: default
+Source Codes:
+       C - connected, S - static, K - kernel,
+       O - OSPF, IA - OSPF inter area, E1 - OSPF external type 1,
+       E2 - OSPF external type 2, N1 - OSPF NSSA external type 1,
+       N2 - OSPF NSSA external type2, B - Other BGP Routes,
+       B I - iBGP, B E - eBGP, R - RIP, I L1 - IS-IS level 1,
+       I L2 - IS-IS level 2, O3 - OSPFv3, A B - BGP Aggregate,
+       A O - OSPF Summary, NG - Nexthop Group Static Route,
+       V - VXLAN Control Service, M - Martian,
+       DH - DHCP client installed default route,
+       DP - Dynamic Policy Route, L - VRF Leaked,
+       G  - gRIBI, RC - Route Cache Route,
+       CL - CBF Leaked Route
+
+Gateway of last resort is not set
+
+ C        10.0.0.2/32
+           directly connected, Loopback0
+ C        10.10.10.0/30
+           directly connected, Ethernet1
+ C        10.10.10.4/30
+           directly connected, Ethernet2
+ O        10.10.10.8/30 [110/20]
+           via 10.10.10.6, Ethernet2
+ O        10.10.10.12/30 [110/20]
+           via 10.10.10.1, Ethernet1
+ C        172.17.0.0/16
+           directly connected, Management0
+ C        192.168.102.0/24
+           directly connected, Loopback100
+

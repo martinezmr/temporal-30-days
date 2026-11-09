@@ -14,9 +14,19 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync
+      # The tests download the time-skipping server and, without a `temporal` CLI, the dev server.
+      - name: Cache the Temporal servers
+        uses: actions/cache@v4
+        with:
+          path: |
+            /tmp/temporal-sdk-python-*
+            /tmp/temporal-test-server-sdk-python-*
+          key: temporal-servers-${{ runner.os }}-${{ hashFiles('uv.lock') }}
       - run: uv run ruff check src tests solutions scripts lab
       - run: uv run pytest -q
       - run: uv run pytest -q lab/nautobot
+      # Includes the replay tests (Day 6): a workflow change that would break a recorded history
+      # fails here, before it can become a new build (Day 30).
       - run: scripts/test-solutions.sh
       - run: uv run python scripts/check_lessons.py
       - name: src/ starts identical to the Day 1 solution

@@ -1,0 +1,28 @@
+# Day 21: the device-io worker as a container image.
+#
+# Build from the repo root. CODE picks whose code goes in: your src/ (the default) or a
+# solution day.
+#   podman build -f lab/Containerfile.worker -t netops-device-io .
+#   podman build -f lab/Containerfile.worker --build-arg CODE=solutions/day-21 -t netops-device-io .
+# Run it (see Day 21 for the addresses to use from inside a container):
+#   podman run --rm --env-file .env -e TEMPORAL_ADDRESS=host.containers.internal:7233 netops-device-io
+FROM docker.io/library/python:3.13-slim
+
+COPY --from=ghcr.io/astral-sh/uv:0.9.7 /uv /usr/local/bin/uv
+WORKDIR /app
+
+# Dependencies first, in their own layer: rebuilding after a code change skips this step.
+COPY pyproject.toml uv.lock README.md ./
+RUN uv sync --frozen --no-dev --no-install-project
+
+ARG CODE=src
+COPY ${CODE}/netops_temporal /app/code/netops_temporal
+ENV PYTHONPATH=/app/code PATH=/app/.venv/bin:$PATH PYTHONUNBUFFERED=1
+
+# Not root: a worker needs no privileges.
+RUN useradd --create-home worker && mkdir -p /app/output && chown worker /app/output
+USER worker
+
+# SIGTERM (podman stop, Kubernetes, systemd) triggers the worker's graceful shutdown.
+STOPSIGNAL SIGTERM
+CMD ["python", "-m", "netops_temporal.workers.device_io"]

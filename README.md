@@ -36,13 +36,14 @@ the way you'll use three device libraries, each where it fits best:
 | Temporal dev server + UI | `./lab/start-temporal.sh` → http://localhost:8233 |
 | 4 × Arista cEOS (containerlab) | `lab/ceos-clab.clab.yml`, static IPs, eAPI + SSH as `admin`/`admin` |
 | Nautobot | `lab/nautobot/start.sh` + `lab/nautobot/seed.py` → http://localhost:8080 |
+| A language model (Days 25–28, optional) | Ollama on your laptop, or any OpenAI-compatible server |
 
 Set it up once with [docs/lab-setup.md](docs/lab-setup.md) (30–45 minutes). Behind a jump host?
 `lab/tunnels.sh` handles it.
 
 **No lab handy?** Every day also runs in **mock mode** (`LAB_MODE=mock`): device and Nautobot
-calls replay outputs recorded from the real lab, and you can fake failures (a device down, bad
-credentials, slow CLI). Temporal itself is always real.
+calls replay outputs recorded from the real lab, a scripted model stands in on the AI days, and
+you can fake failures (a device down, bad credentials, slow CLI). Temporal itself is always real.
 
 ## How this course works
 
@@ -89,60 +90,60 @@ rm -rf src/netops_temporal && cp -r solutions/day-02/netops_temporal src/
 
 ## The 30 days
 
-Days 1–7 are fully written. Days 8–30 are still outlines, and are being rewritten in the
-same format.
+**Needs the lab?** says what each day needs from your cEOS lab. **Optional** means the day runs in
+mock mode too. **No** means you don't need it at all.
 
 | Day | Topic | Key features | Needs the lab? |
 | --- | --- | --- | --- |
 | **Week 1 — Foundations, against real devices** | | | |
 | [01](days/week-1/day-01-lab-up/README.md) | Lab up, how Temporal runs your code | server, worker, task queues, event history | No |
-| [02](days/week-1/day-02-eapi-activity/README.md) | First real activity with pyeapi | sync activities, timeouts, retry policy | Optional (mock works) |
+| [02](days/week-1/day-02-eapi-activity/README.md) | First real activity with pyeapi | sync activities, timeouts, retry policy | Optional |
 | [03](days/week-1/day-03-models-and-failures/README.md) | Data models and failures | Pydantic converter, non-retryable errors | Optional |
 | [04](days/week-1/day-04-determinism/README.md) | Determinism and replay | sandbox, replay, `workflow.now()` | No |
 | [05](days/week-1/day-05-heartbeats-and-threads/README.md) | Netmiko, heartbeats, cancellation | thread-pool activities, heartbeats, cancellation | Optional |
 | [06](days/week-1/day-06-testing/README.md) | Testing | time-skipping env, stubbed activities, Replayer | No |
 | [07](days/week-1/day-07-parallel-backup/README.md) | Mini-project: parallel backup (NAPALM) + intent (Nautobot) | `asyncio.gather`, partial failure | Optional |
 | **Week 2 — Message passing and long-running workflows** | | | |
-| [08](days/week-2/day-08-signals/README.md) | Signals | signal handlers, `wait_condition` | |
-| [09](days/week-2/day-09-queries/README.md) | Queries | query handlers | |
-| [10](days/week-2/day-10-updates/README.md) | Updates | validators, update-with-start, signal-with-start | |
-| [11](days/week-2/day-11-timers/README.md) | Timers and maintenance windows | durable timers, timeouts, time skipping | |
-| [12](days/week-2/day-12-continue-as-new/README.md) | Continue-As-New | history limits, `all_handlers_finished` | |
-| [13](days/week-2/day-13-entity-workflows/README.md) | Entity workflows | one workflow per device, request queue | |
-| [14](days/week-2/day-14-orchestrator-v0/README.md) | Mini-project: Orchestrator v0 | everything from Week 2 | |
+| [08](days/week-2/day-08-signals/README.md) | Signals | signal handlers, `wait_condition` | Optional |
+| [09](days/week-2/day-09-queries/README.md) | Queries | query handlers | Optional |
+| [10](days/week-2/day-10-updates/README.md) | Updates | validators, update-with-start, signal-with-start | Optional |
+| [11](days/week-2/day-11-timers/README.md) | Timers and maintenance windows | durable timers, timeouts, time skipping | Optional |
+| [12](days/week-2/day-12-continue-as-new/README.md) | Continue-As-New | history limits, `all_handlers_finished` | Optional |
+| [13](days/week-2/day-13-entity-workflows/README.md) | Entity workflows | one workflow per device, request queue | Optional |
+| [14](days/week-2/day-14-orchestrator-v0/README.md) | Mini-project: Orchestrator v0 | everything from Week 2 | Optional |
 | **Week 3 — Composition and production hardening** | | | |
-| [15](days/week-3/day-15-child-workflows/README.md) | Child workflows | parent close policy | |
-| [16](days/week-3/day-16-fan-out/README.md) | Fan-out without duplicates | ID conflict policy, concurrency caps | |
-| [17](days/week-3/day-17-saga-rollback/README.md) | Saga: safe config push (NAPALM) | compensation, candidate/commit/rollback | |
-| [18](days/week-3/day-18-schedules/README.md) | Schedules | overlap policy, backfill | |
-| [19](days/week-3/day-19-versioning/README.md) | Versioning | patching, Worker Versioning | |
-| [20](days/week-3/day-20-observability/README.md) | Observability | search attributes, metadata, metrics, tracing | |
-| [21](days/week-3/day-21-production-workers/README.md) | Production-shaped workers, locally | task-queue routing, rate limits, graceful shutdown, codecs | |
+| [15](days/week-3/day-15-child-workflows/README.md) | Child workflows | parent close policy | Optional |
+| [16](days/week-3/day-16-fan-out/README.md) | Fan-out without duplicates | ID conflict policy, concurrency caps | Optional |
+| [17](days/week-3/day-17-saga-rollback/README.md) | Saga: safe config push (NAPALM) | compensation, candidate/commit/rollback | Optional (changes your devices) |
+| [18](days/week-3/day-18-schedules/README.md) | Schedules | overlap policy, backfill | Optional |
+| [19](days/week-3/day-19-versioning/README.md) | Versioning | patching, Worker Versioning | Optional |
+| [20](days/week-3/day-20-observability/README.md) | Observability | search attributes, metadata, metrics, tracing | Optional |
+| [21](days/week-3/day-21-production-workers/README.md) | Production-shaped workers, locally | task-queue routing, rate limits, graceful shutdown, codecs | Optional |
 | **Week 4 — Nexus and AI** | | | |
-| [22](days/week-4/day-22-nexus-sync/README.md) | First Nexus service | endpoints, sync operations | |
-| [23](days/week-4/day-23-nexus-async/README.md) | Async Nexus operations | workflow-backed operations, cancellation | |
-| [24](days/week-4/day-24-nexus-contracts/README.md) | Nexus errors and contracts | timeouts, errors, shared contract package | |
-| [25](days/week-4/day-25-llm-activity/README.md) | AI 1: LLM call as an activity (GitHub Copilot models) | structured output, retries | |
-| [26](days/week-4/day-26-durable-agent/README.md) | AI 2: durable agent | agents as workflows, tools as activities | |
-| [27](days/week-4/day-27-human-in-the-loop/README.md) | AI 3: human in the loop | approval updates, deadlines | |
-| [28](days/week-4/day-28-mcp-guardrails/README.md) | AI 4: MCP and guardrails | MCP servers, allowlists, cost caps | |
+| [22](days/week-4/day-22-nexus-sync/README.md) | First Nexus service | endpoints, sync operations | Optional |
+| [23](days/week-4/day-23-nexus-async/README.md) | Async Nexus operations | workflow-backed operations, cancellation | Optional |
+| [24](days/week-4/day-24-nexus-contracts/README.md) | Nexus errors and contracts | timeouts, errors, shared contract package | No |
+| [25](days/week-4/day-25-llm-activity/README.md) | AI 1: LLM call as an activity (any OpenAI-compatible API) | structured output, retries | No |
+| [26](days/week-4/day-26-durable-agent/README.md) | AI 2: durable agent | agents as workflows, tools as activities | Optional |
+| [27](days/week-4/day-27-human-in-the-loop/README.md) | AI 3: human in the loop | approval updates, deadlines | No |
+| [28](days/week-4/day-28-mcp-guardrails/README.md) | AI 4: MCP and guardrails | MCP servers, allowlists, guardrails | No |
 | **Capstone** | | | |
-| [29](days/capstone/day-29-assemble-orchestrator/README.md) | Assemble the orchestrator | all of it | |
-| [30](days/capstone/day-30-worker-versioning/README.md) | Worker Versioning locally + CI | v1 and v2 workers side by side, replay tests in CI | |
+| [29](days/capstone/day-29-assemble-orchestrator/README.md) | Assemble the orchestrator | all of it | Optional (changes your devices) |
+| [30](days/capstone/day-30-worker-versioning/README.md) | Worker Versioning locally + CI | v1 and v2 workers side by side, pinned and auto-upgrade, ramping, replay tests in CI | No |
 
 ## Architecture you're building toward
 
 ```
               Operators · nightly schedule · AI approvals
                          │ signals / queries / updates
-┌──────────── namespace: default ─────────────┐     ┌──── namespace: compliance ────┐
-│  NetworkComplianceOrchestrator (entity)     │────▶│  compliance-endpoint (Nexus)  │
-│    ├─ DeviceUpgradeWorkflow (child)         │     │    └─ ConfigComplianceWorkflow │
-│    └─ Troubleshooting agent (child)         │     │        (saga + rollback)       │
-└──────┬───────────────┬──────────────┬───────┘     └──────────────┬────────────────┘
+┌──────────── namespace: default ─────────────┐     ┌──── namespace: compliance ──────┐
+│  NetworkComplianceOrchestrator (entity)     │────▶│  compliance-endpoint (Nexus)    │
+│    └─ DeviceUpgradeWorkflow (child)         │     │    └─ ConfigRemediationWorkflow │
+│  TroubleshootWorkflow (agent)               │────▶│        (saga + rollback)        │
+└──────┬───────────────┬──────────────┬───────┘     └──────────────┬──────────────────┘
        │ intent        │ model calls  │ state                      │ config changes
-   Nautobot     GitHub Copilot   4 × Arista cEOS ◀─────────────────┘
-                   models
+   Nautobot      an OpenAI-compatible  4 × Arista cEOS ◀───────────┘
+                 model server
 ```
 
 ## Repo layout
