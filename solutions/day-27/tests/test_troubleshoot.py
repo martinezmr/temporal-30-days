@@ -7,6 +7,8 @@ import uuid
 from contextlib import asynccontextmanager
 
 import pytest
+from agents.tracing import get_trace_provider
+from agents.tracing.processors import BackendSpanExporter
 from temporalio.api.enums.v1 import EventType
 from temporalio.client import Client, WorkflowUpdateFailedError
 from temporalio.contrib.openai_agents.testing import AgentEnvironment, ResponseBuilders, TestModel
@@ -77,6 +79,16 @@ async def troubleshoot(env, start_workers, model, symptom="users on Et1 can't co
                 task_queue=worker.task_queue,
             )
             return await handle.result(), await handle.fetch_history()
+
+
+async def test_agent_traces_are_not_exported(workflow_env, start_workers, monkeypatch):
+    # Traces include device output. The Agents SDK would upload them to OpenAI for anyone with
+    # OPENAI_API_KEY set, and the plugin's spans ignore set_tracing_disabled.
+    exported = []
+    monkeypatch.setattr(BackendSpanExporter, "export", lambda _, items: exported.extend(items))
+    await troubleshoot(workflow_env, start_workers, ScriptedTroubleshooter())
+    get_trace_provider().force_flush()
+    assert exported == []
 
 
 async def test_agent_calls_tool_then_answers(workflow_env, start_workers):

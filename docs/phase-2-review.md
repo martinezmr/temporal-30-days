@@ -8,7 +8,7 @@ the things listed under **What to judge** before this merges.
 | Area | Before | Now |
 | --- | --- | --- |
 | Lessons, Days 8–30 | Outlines | Full lessons, plus overviews for Weeks 2, 3 and 4 |
-| Solutions | Days 1–7 | `solutions/day-01` … `day-30`, each complete and runnable: 22 tests on Day 1, 203 on Day 30 |
+| Solutions | Days 1–7 | `solutions/day-01` … `day-30`, each complete and runnable: 22 tests on Day 1, 205 on Day 30 |
 | Replay tests | Exports from Week 1 | Also cover the watch, remediation, audit and orchestrator workflows, including a two-cycle orchestrator run with approvals |
 | AI week | GitHub Models through Copilot | Any OpenAI-compatible API, with Ollama as the default, because GitHub Models was retired on 2026-07-30 |
 | OpenShift | Days 21 and 30 targeted it | Local versions: split workers and a container on Day 21, v1 and v2 side by side on Day 30 |
@@ -31,14 +31,17 @@ Final run on this branch: ruff clean, root tests 33 passed, lab tests 2 passed,
 `scripts/test-solutions.sh` passed on all 30 days, `check_lessons.py` OK on 34 lessons, and `src/`
 identical to Day 1.
 
-Live runs found real bugs that the tests had missed. All of these are fixed:
+Checking live runs and their logs found real bugs that the tests had missed. All of these are fixed:
 
 - Cancelling the orchestrator could drop its Nexus cancel requests, so remediations pushed anyway
   (Day 23).
 - Child workflows' search attributes were built in a form the SDK rejects (Days 20–22).
 - A burst of entity backups collided on second-resolution file names (Day 13).
 - An HTTP exception chain made an LLM failure too large to store (Day 25).
-- The Agents SDK uploads traces, including device output, to OpenAI by default. It's now off (Day 26).
+- The Agents SDK queues traces, including device output, for upload to OpenAI whenever
+  `OPENAI_API_KEY` is set, and the Temporal plugin's spans ignore `set_tracing_disabled`. The exporter
+  is now removed, with a test on Days 26–30. No real upload was tested: the check replaces the
+  exporter, and the key wasn't set on the machine used for the live runs.
 - `lab/deploy.sh` could leave the two namespaces on different builds (Day 30).
 
 ## Not verified live

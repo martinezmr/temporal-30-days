@@ -9,7 +9,7 @@ import json
 import re
 from datetime import timedelta
 
-from agents import Model, ModelProvider, OpenAIChatCompletionsModel, set_tracing_disabled
+from agents import Model, ModelProvider, OpenAIChatCompletionsModel, set_trace_processors
 from openai import AsyncOpenAI
 from temporalio.common import RetryPolicy
 from temporalio.contrib.openai_agents import ModelActivityParameters, OpenAIAgentsPlugin
@@ -18,9 +18,10 @@ from temporalio.contrib.openai_agents.testing import ResponseBuilders
 from netops_temporal.constants import DEVICE_IO_TASK_QUEUE
 from netops_temporal.llm import client as llm
 
-# The Agents SDK uploads traces to OpenAI's platform by default. Prompts here include device
-# output, which stays on your network: Temporal's history is the trace.
-set_tracing_disabled(True)
+# The Agents SDK uploads traces to OpenAI's platform for anyone with OPENAI_API_KEY set. They
+# include device output, which stays on your network: Temporal's history is the trace. This
+# removes the exporter. set_tracing_disabled isn't enough: the plugin's spans still reach it.
+set_trace_processors([])
 
 
 class OpenAICompatibleProvider(ModelProvider):
